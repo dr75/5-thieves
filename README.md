@@ -23,16 +23,6 @@ Läuft unter / Live at: **<https://happy.reb00t.io>**
 Die deutsche Merkhilfe ist **KEBAB**. Im Englischen fangen alle fünf mit C an,
 darum gibt es dort keine.
 
-## Zwei Fassungen / Two wordings
-
-Oben rechts lässt sich zwischen **Original** und **Modern** umschalten:
-Izzos Erklärungen aus dem Buch oder eine kurze Fassung in Alltagssprache.
-Beides gibt es auf Deutsch und Englisch; die Wahl bleibt gespeichert.
-
-Top right switches between **Original** and **Modern** — Izzo's declarations
-from the book, or a short everyday-language version. Both exist in German and
-English, and the choice is remembered.
-
 ## Was es bewusst nicht tut / Deliberate non-features
 
 - keine Streaks, keine Punkte, keine Belohnungen — eine gamifizierte Version
