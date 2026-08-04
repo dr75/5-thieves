@@ -39,22 +39,32 @@
   .wrap{max-width:460px;margin:0 auto;padding:16px 20px 20px;height:100%;display:flex;flex-direction:column}
   /* only this pane may scroll, and only when a day list outgrows it */
   #view{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
-  #view>section{animation:rise .38s ease both;padding-bottom:8px}
-  @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  #view>section{animation:rise .38s ease both;padding-bottom:8px;
+                min-height:100%;display:flex;flex-direction:column}
+  .fill{flex:1 1 auto;min-height:0}
+  #view>section.intro{text-align:center}
+  .intro .prose p{margin-left:auto;margin-right:auto}
+  .intro .names{max-width:224px;margin-left:auto;margin-right:auto;text-align:left}
+  .intro .lede,.intro h1{max-width:none}
+  .intro h1.title{font-size:31px;line-height:1.18;margin:0;max-width:12ch;margin-left:auto;margin-right:auto}
+  .next+.dots{margin-top:0}
+  @keyframes rise{from{opacity:0}to{opacity:1}}
 
   /* ---- masthead ---- */
   .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:20px;flex:none}
-  .mark{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:.16em;line-height:1;
+  .mark{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.14em;line-height:1;
         background:none;border:0;padding:0;color:inherit;cursor:pointer}
   .mark span{color:var(--accent)}
-  .topright{display:flex;align-items:center;gap:14px}
+  .topright{display:flex;align-items:center;gap:14px;margin-left:auto}
   .lang{display:flex;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
   .lang button{background:none;border:0;color:var(--mute);cursor:pointer;padding:2px 3px;font:inherit}
-  .lang button[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+  .lang button{transition:color .2s ease}
+  .lang button[aria-pressed="true"]{color:var(--ink);font-weight:500}
   .lang i{color:var(--line);font-style:normal;padding:0 2px}
-  .linky{background:none;border:0;font:inherit;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
-         color:var(--mute);cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0}
-  .linky:hover{color:var(--ink)}
+  .linky{background:none;border:0;border-bottom:1px solid var(--line);font:inherit;font-family:var(--mono);
+         font-size:12px;letter-spacing:.06em;color:var(--mute);cursor:pointer;padding:0 0 2px;
+         transition:color .2s ease,border-color .2s ease}
+  .linky:hover{color:var(--ink);border-bottom-color:var(--accent)}
 
   /* ---- intro ---- */
   .prose p{font-size:16px;line-height:1.56;margin-bottom:12px;max-width:38ch}
@@ -76,34 +86,41 @@
   .lede{color:var(--mute);font-size:15px;margin-bottom:20px;max-width:36ch}
 
   /* ---- mantra recital, one at a time ---- */
-  .mantra{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:24px 4px;margin-bottom:16px}
+  .mantra{background:var(--fill);border:1px solid var(--line);border-left-width:2px;border-left-color:var(--accent);
+          border-radius:4px;padding:18px 18px 20px;margin:2px 0 14px}
   .mantra .who{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
   .mantra .say{font-family:var(--display);font-weight:600;font-size:21px;line-height:1.35;letter-spacing:-.01em;margin-top:8px}
-  .count{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--mute);text-align:center}
+  .dots{display:flex;justify-content:center;gap:7px;margin-top:6px;flex:none}
+  .dots i{width:6px;height:6px;border-radius:50%;background:var(--ink);opacity:.17;
+          transition:opacity .3s ease,background-color .3s ease,transform .3s ease}
+  .dots i.on{background:var(--accent);opacity:1;transform:scale(1.15)}
 
   /* ---- mantra of the day ---- */
-  .focus-card{background:var(--fill);border:1px solid var(--line);border-radius:4px;padding:15px 16px 17px;margin:2px 0 18px}
+  .focus-card{background:var(--fill);border:1px solid var(--line);border-left-width:2px;border-left-color:var(--accent);border-radius:4px;padding:15px 16px 17px;margin:2px 0 18px}
   .focus-card .who{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
   .focus-card .say{font-family:var(--display);font-weight:600;font-size:17px;line-height:1.4;letter-spacing:-.005em;margin-top:5px;color:var(--accent)}
 
   /* ---- selectable list (focus step) ---- */
   .thieves{display:flex;flex-direction:column;border-top:1px solid var(--line)}
   .thief{display:flex;align-items:flex-start;gap:14px;width:100%;text-align:left;
-         background:none;border:0;border-bottom:1px solid var(--line);padding:15px 6px;
-         color:var(--ink);font:inherit;cursor:pointer;transition:background-color .18s ease}
+         background:none;border:0;border-bottom:1px solid var(--line);border-left:2px solid transparent;
+         padding:11px 6px 11px 10px;color:var(--ink);font:inherit;cursor:pointer;
+         transition:background-color .18s ease,border-color .18s ease}
   .thief:hover{background:var(--fill)}
   .thief .glyph{font-family:var(--display);font-weight:800;font-size:22px;line-height:1;width:20px;
                 flex:none;color:var(--mute);padding-top:2px;transition:color .18s ease}
-  .thief .name{font-family:var(--display);font-weight:600;font-size:19px;line-height:1.2;letter-spacing:-.01em}
-  .thief .desc{color:var(--mute);font-size:13.5px;line-height:1.42;margin-top:3px}
-  .thief[aria-pressed="true"]{background:var(--fill)}
+  .thief .name{display:block;font-family:var(--display);font-weight:600;font-size:18px;line-height:1.2;letter-spacing:-.01em}
+  .thief .desc{display:block;color:var(--mute);font-size:13px;line-height:1.38;margin-top:4px}
+  .thief[aria-pressed="true"]{background:var(--fill);border-left-color:var(--accent)}
   .thief[aria-pressed="true"] .glyph{color:var(--accent)}
   .thief[aria-pressed="true"] .name{color:var(--accent)}
 
   /* ---- yes / no ---- */
   .yn{display:flex;gap:10px}
-  .yn button{flex:1;background:none;border:1px solid var(--line);border-radius:4px;color:var(--ink);
-             font:inherit;font-size:16px;font-weight:500;padding:13px;cursor:pointer;transition:border-color .18s ease}
+  .yn button{flex:1;background:none;border:1px solid var(--line);border-radius:999px;color:var(--ink);
+             font:inherit;font-size:15px;font-weight:500;padding:12px;cursor:pointer;
+             transition:border-color .18s ease,color .18s ease,background-color .18s ease}
+  .yn button:hover{border-color:var(--mute)}
   .yn button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--fill)}
 
   /* ---- fields ---- */
@@ -120,15 +137,27 @@
   .grat .n{font-family:var(--mono);font-size:12px;color:var(--mute);flex:none;width:14px}
 
   /* ---- buttons ---- */
-  .save{margin-top:20px;width:100%;background:var(--ink);color:var(--bg);border:0;border-radius:4px;
-        font:inherit;font-weight:600;font-size:16px;padding:15px;cursor:pointer;transition:opacity .2s ease}
-  .save[disabled]{opacity:.28;cursor:default}
+  .save{margin-top:18px;width:100%;background:var(--ink);color:var(--bg);border:0;border-radius:999px;
+        font:inherit;font-weight:600;font-size:15px;letter-spacing:.015em;padding:15px;cursor:pointer;
+        transition:opacity .2s ease,transform .12s ease}
+  .save:hover{opacity:.9}
+  /* page-turn action: a quiet outline circle instead of a full-width slab */
+  .next{align-self:center;margin:18px 0 16px;width:54px;height:54px;flex:none;border-radius:50%;
+        border:1.5px solid var(--mute);background:none;color:var(--ink);cursor:pointer;
+        display:flex;align-items:center;justify-content:center;
+        transition:border-color .2s ease,color .2s ease,transform .12s ease}
+  .next:hover{border-color:var(--accent);color:var(--accent)}
+  .next:active{transform:translateY(1px)}
+  .next svg{width:19px;height:19px;display:block}
+  .save:active{transform:translateY(1px)}
+  .save[disabled]{opacity:.3;cursor:default;transform:none}
   .hint{margin-top:10px;font-size:13px;color:var(--mute);border-left:2px solid var(--line);padding-left:12px}
   .footnote{margin-top:16px;font-size:13px;color:var(--mute);text-align:center}
   .switch{margin-top:16px;text-align:center}
   .actions{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap}
-  .ghost{background:none;border:1px solid var(--line);border-radius:4px;color:var(--ink);
-         font:inherit;font-size:14px;padding:10px 14px;cursor:pointer}
+  .ghost{background:none;border:1px solid var(--line);border-radius:999px;color:var(--ink);
+         font:inherit;font-size:14px;padding:9px 16px;cursor:pointer;
+         transition:border-color .18s ease,color .18s ease}
   .ghost:hover{border-color:var(--accent);color:var(--accent)}
   .danger{color:var(--mute)}
 
@@ -188,7 +217,7 @@ const THIEVES = [
   { id:'control',
     de:{ n:'Kontrolle',      a:'die',
          m:'Ich entscheide mich für diesen Augenblick und sage Ja zu dem, was ist. Das Glück liegt nicht in dem Ergebnis, das ich suche.',
-         d:'Der Glaube, Menschen und den Lauf der Dinge lenken zu können.' },
+         d:'Menschen und den Lauf der Dinge lenken wollen.' },
     en:{ n:'Control',
          m:'I choose to be in the present moment and to embrace whatever is. Happiness is not in the outcome I seek.',
          d:'The belief that outcomes and people can be steered.' } },
@@ -225,29 +254,30 @@ const THIEVES = [
 const I18N = {
   de:{
     nav_log:'Rückblick', nav_back:'Zurück',
-    i_about:'Was ist das?',
+    i_about:'Was ist das?', i_skip:'Überspringen',
     i_kebab:'Die Anfangsbuchstaben ergeben das Merkwort KEBAB.',
     i_book:'Das Buch dazu:',
     i_book_t:'John Izzo: Die fünf Diebe des Glücks',
     i_url:'https://amzn.eu/d/0gEEW3as',
     i_start:'Los geht’s',
     intro:[
-      { h:'Die fünf Diebe', p:[
-        'John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen. Er nennt sie die fünf Diebe des Glücks.'] },
-      { h:'Worum es geht', p:[
-        'Das hier ist ein Training, kein Test. Die Diebe verschwinden nicht, weil man sie kennt – sie verlieren ihre Macht, wenn man sie im Alltag bemerkt.',
-        'Dafür sind die Mantras da: Jedes stellt seinem Dieb etwas entgegen. Du sprichst sie morgens – und noch einmal, sobald du den Dieb bei der Arbeit erwischst.'] },
-      { h:'So läuft ein Tag', p:[
+      { title:'Die fünf Diebe des Glücks' },
+      { p:['John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen. Er nennt sie die fünf Diebe des Glücks.'], names:true },
+      { p:[
+        'Du übst hier eine Gewohnheit ein: die fünf Diebe zu erkennen, während sie am Werk sind.',
+        'Je öfter du sie erwischst, desto weniger Macht haben sie – mit der Zeit tauchen sie seltener auf und nehmen dir weniger weg.',
+        'Dafür sind die Mantras da: Jedes stellt seinem Dieb etwas entgegen. Du sprichst sie morgens – und noch einmal, sobald du einen Dieb bei der Arbeit erwischst.'] },
+      { p:[
         'Morgens sprichst du die fünf Mantras, eines nach dem anderen, und wählst eines davon als Fokus für den Tag.',
         'Tagsüber merkst du, wenn dieser Dieb auftaucht – und sprichst sein Mantra noch einmal. Nicht bewerten: bemerken und antworten.',
         'Abends notierst du drei Dinge, für die du dankbar bist, und einen Menschen, den du feiern willst.'] },
-      { h:'Nach 30 Tagen', p:[
+      { p:[
         'Der Rückblick zeigt dir, welcher Dieb dich tatsächlich bestohlen hat.',
-        '30 Tage sind ein guter Anfang, kein Abschluss. Die Diebe kommen wieder – das Bemerken bleibt Übung.',
+        '30 Tage sind ein guter Anfang. Die Diebe kommen wieder – das Bemerken bleibt Übung.',
         '„Tag 12 von 30“ zählt eingetragene Tage, nicht Kalendertage. 30 Tage dürfen 45 dauern.'] },
-      { h:'Das Buch', p:[
+      { p:[
         'Die Idee der fünf Diebe stammt von John Izzo. Diese App ersetzt das Buch nicht – sie macht aus der Übung darin eine tägliche Gewohnheit.',
-        'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.'] }
+        'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.'], book:true }
     ],
     morning:'Morgens', daytime:'Tagsüber', evening:'Abends',
     step:(a,b)=>`Schritt ${a} von ${b}`,
@@ -258,7 +288,7 @@ const I18N = {
     recite_l:'Sprich jedes einmal, laut oder leise, und lass es einen Atemzug lang nachklingen.',
     next:'Weiter',
     focus_h:'Welches Mantra begleitet dich heute?',
-    focus_l:'Eines genügt. Vorgeschlagen ist das nächste in der Reihe – du kannst auch ein anderes nehmen.',
+    focus_l:'Eines genügt. Vorgeschlagen ist das nächste in der Reihe.',
     start:'Tag beginnen',
     todays:'Dein Mantra für heute',
     check_h:(n)=>`Ist ${n} heute aufgetaucht?`,
@@ -291,29 +321,30 @@ const I18N = {
   },
   en:{
     nav_log:'Review', nav_back:'Back',
-    i_about:'What is this?',
+    i_about:'What is this?', i_skip:'Skip',
     i_kebab:'In English all five begin with a C.',
     i_book:'The book:',
     i_book_t:'John Izzo: The Five Thieves of Happiness',
     i_url:'https://amzn.eu/d/0eAXp9t8',
     i_start:'Start',
     intro:[
-      { h:'The five thieves', p:[
-        'John Izzo describes five habits of mind that steal our happiness. He calls them the five thieves of happiness.'] },
-      { h:'What it is for', p:[
-        'This is a training, not a test. The thieves don’t go away because you understand them — they lose their grip when you catch them during the day.',
-        'That is what the mantras are for: each one answers its thief. You say them in the morning — and again the moment you catch that thief at work.'] },
-      { h:'How a day runs', p:[
+      { title:'The Five Thieves of Happiness' },
+      { p:['John Izzo describes five habits of mind that steal our happiness. He calls them the five thieves of happiness.'], names:true },
+      { p:[
+        'What you practise here is a habit: recognising the five thieves while they are at work.',
+        'The more often you catch them, the less power they have — over time they show up less often and take less from you.',
+        'That is what the mantras are for: each one answers its thief. You say them in the morning — and again the moment you catch a thief at work.'] },
+      { p:[
         'In the morning you say the five mantras, one after another, and pick one of them as your focus for the day.',
         'During the day, when that thief shows up you notice it and say its mantra again. Don’t judge it: notice, and answer.',
         'In the evening you note three things you are grateful for and one person you want to celebrate.'] },
-      { h:'After 30 days', p:[
+      { p:[
         'The review shows you which thief actually stole from you.',
-        'Thirty days is a good start, not a finish. The thieves come back — noticing them stays a practice.',
+        'Thirty days is a good start. The thieves come back — noticing them stays a practice.',
         '“Day 12 of 30” counts days you logged, not calendar days. Thirty days may take forty-five.'] },
-      { h:'The book', p:[
+      { p:[
         'The idea of the five thieves is John Izzo’s. This app doesn’t replace the book — it turns the exercise in it into a daily habit.',
-        'Everything stays on this device. No account, no server.'] }
+        'Everything stays on this device. No account, no server.'], book:true }
     ],
     morning:'Morning', daytime:'During the day', evening:'Evening',
     step:(a,b)=>`Step ${a} of ${b}`,
@@ -324,7 +355,7 @@ const I18N = {
     recite_l:'Say each one once, out loud or quietly, and let it stand for a breath.',
     next:'Next',
     focus_h:'Which mantra walks with you today?',
-    focus_l:'One is enough. The suggestion follows the rotation — feel free to deviate.',
+    focus_l:'One is enough. The suggestion follows the rotation.',
     start:'Begin the day',
     todays:'Your mantra for today',
     check_h:(n)=>`Did ${n} show up?`,
@@ -571,6 +602,17 @@ function header(eyebrow, count, h1, lede){
     </div>`);
 }
 
+const fill = () => el('<div class="fill"></div>');
+const arrow = (label, onclick) => {
+  const b = el(`<button class="next" aria-label="${label}" title="${label}">`
+    + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"'
+    + ' stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>');
+  b.onclick = onclick;
+  return b;
+};
+const dots = (i,n) => el(`<div class="dots">${
+  Array.from({length:n},(_,k)=>`<i class="${k===i?'on':''}"></i>`).join('')}</div>`);
+
 function eyebrowFor(part){
   return ui.catchup ? t().catchup(dateLabel(ui.key)) : part;
 }
@@ -589,31 +631,32 @@ function dayLabel(){
 function IntroView(){
   const steps = t().intro;
   const i = Math.min(ui.intro, steps.length-1), st = steps[i], last = i === steps.length-1;
-  const w = el('<section></section>');
-  w.appendChild(el(`<div class="eyebrow">${t().i_about}</div>`));
-  w.appendChild(el(`<h1>${st.h}</h1>`));
+  const w = el('<section class="intro"></section>');
+  w.appendChild(fill());
 
-  const p = el('<div class="prose"></div>');
-  st.p.forEach(x=>p.appendChild(el(`<p>${x}</p>`)));
-
-  if (i === 0){                                  // name the five, KEBAB down the side
-    const names = el('<div class="names"></div>');
-    THIEVES.forEach(th=>names.appendChild(el(
-      `<div><span class="g">${S.lang==='de' ? th.de.n[0] : '·'}</span><span class="n">${th[S.lang].n}</span></div>`)));
-    p.appendChild(names);
-    p.appendChild(el(`<p class="note">${t().i_kebab}</p>`));
+  if (st.title){                                 // the opening screen is the title, nothing else
+    w.appendChild(el(`<h1 class="title">${st.title}</h1>`));
+  } else {
+    const p = el('<div class="prose"></div>');
+    (st.p||[]).forEach(x=>p.appendChild(el(`<p>${x}</p>`)));
+    if (st.names){                               // the five, with KEBAB down the initials
+      const names = el('<div class="names"></div>');
+      THIEVES.forEach(th=>names.appendChild(el(
+        `<div><span class="g">${S.lang==='de' ? th.de.n[0] : '·'}</span><span class="n">${th[S.lang].n}</span></div>`)));
+      p.appendChild(names);
+      p.appendChild(el(`<p class="note">${t().i_kebab}</p>`));
+    }
+    if (st.book) p.appendChild(el(
+      `<p class="book">${t().i_book}<br><a href="${t().i_url}" target="_blank" rel="noopener noreferrer">${t().i_book_t}</a></p>`));
+    w.appendChild(p);
   }
-  if (last) p.appendChild(el(
-    `<p class="book">${t().i_book}<br><a href="${t().i_url}" target="_blank" rel="noopener noreferrer">${t().i_book_t}</a></p>`));
-  w.appendChild(p);
 
-  w.appendChild(el(`<div class="count">${i+1} / ${steps.length}</div>`));
-  const btn = el(`<button class="save">${last ? t().i_start : t().next}</button>`);
-  btn.onclick = async ()=>{
+  w.appendChild(fill());
+  w.appendChild(arrow(last ? t().i_start : t().next, async ()=>{
     if (!last){ ui.intro = i+1; render(); return; }
     await leaveIntro();
-  };
-  w.appendChild(btn);
+  }));
+  w.appendChild(dots(i, steps.length));
   return w;
 }
 
@@ -630,15 +673,15 @@ function ReciteView(){
   const last = ui.rec === THIEVES.length - 1;
   const w = el('<section></section>');
   w.appendChild(header(`${t().morning} · ${t().step(1,2)}`, dayLabel(), t().recite_h, t().recite_l));
+  w.appendChild(fill());
   w.appendChild(el(`
     <div class="mantra">
       <div class="who">${th[S.lang].n}</div>
       <div class="say">${say(th.id)}</div>
     </div>`));
-  w.appendChild(el(`<div class="count">${ui.rec+1} / ${THIEVES.length}</div>`));
-  const btn = el(`<button class="save">${t().next}</button>`);
-  btn.onclick = ()=>{ if (last) actRecited(); else { ui.rec++; render(); } };
-  w.appendChild(btn);
+  w.appendChild(fill());
+  w.appendChild(arrow(t().next, ()=>{ if (last) actRecited(); else { ui.rec++; render(); } }));
+  w.appendChild(dots(ui.rec, THIEVES.length));
   return w;
 }
 
@@ -660,6 +703,7 @@ function FocusView(){
     list.appendChild(b);
   });
   w.appendChild(list);
+  w.appendChild(fill());
   const btn = el(`<button class="save" ${ui.focusPick?'':'disabled'}>${t().start}</button>`);
   btn.onclick = actStart;
   w.appendChild(btn);
@@ -700,6 +744,7 @@ function CheckView(){
   ta.oninput = (e)=>{ ui.note = e.target.value; };
   w.appendChild(field);
 
+  w.appendChild(fill());
   const btn = el(`<button class="save" ${ui.showed===null?'disabled':''}>${t().to_journal}</button>`);
   btn.onclick = actCheck;
   w.appendChild(btn);
@@ -746,6 +791,7 @@ function JournalView(){
   ta.oninput = (e)=>{ ui.celeb = e.target.value; };
   w.appendChild(cf);
 
+  w.appendChild(fill());
   const btn = el(`<button class="save" id="finish" ${ui.grats.some(g=>g.trim())?'':'disabled'}>${t().finish}</button>`);
   btn.onclick = actFinish;
   w.appendChild(btn);
@@ -777,6 +823,7 @@ function DoneView(){
   box.appendChild(el(`<p style="margin-top:22px">${full ? t().thirty : t().tomorrow}</p>`));
   w.appendChild(box);
 
+  w.appendChild(fill());
   const acts = el('<div class="actions"></div>');
   const e1 = el(`<button class="ghost">${t().edit_check}</button>`);
   e1.onclick = ()=>actEdit('check');
@@ -866,10 +913,12 @@ function render(){
   document.querySelector('meta[name=theme-color]')
     .setAttribute('content', dusk ? '#151A22' : '#F4EFE8');
 
-  $('mark').innerHTML = S.lang==='de' ? '<span>K</span>EBAB' : '5 THIEVE<span>S</span>';
+  $('mark').innerHTML = S.lang==='de' ? '<span>F</span>ÜNF DIEBE' : '<span>F</span>IVE THIEVES';
+  $('mark').style.display = ui.view==='intro' ? 'none' : '';   // the start screens carry no wordmark
   $('de').setAttribute('aria-pressed', S.lang==='de');
   $('en').setAttribute('aria-pressed', S.lang==='en');
-  $('navBtn').textContent = ui.view==='flow' ? t().nav_log : t().nav_back;
+  $('navBtn').textContent = ui.view==='intro' ? t().i_skip
+                          : ui.view==='flow'  ? t().nav_log : t().nav_back;
   $('mark').setAttribute('aria-label', t().i_about);
   $('mark').title = t().i_about;
 
