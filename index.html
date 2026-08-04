@@ -234,16 +234,20 @@ const I18N = {
     intro:[
       { h:'Die fünf Diebe', p:[
         'John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen. Er nennt sie die fünf Diebe des Glücks.'] },
+      { h:'Worum es geht', p:[
+        'Das hier ist ein Training, kein Test. Die Diebe verschwinden nicht, weil man sie kennt – sie verlieren ihre Macht, wenn man sie im Alltag bemerkt.',
+        'Dafür sind die Mantras da: Jedes stellt seinem Dieb etwas entgegen. Du sprichst sie morgens und trägst eines durch den Tag.'] },
       { h:'So läuft ein Tag', p:[
         'Morgens sprichst du die fünf Mantras, eines nach dem anderen, und wählst eines davon als Fokus für den Tag.',
         'Tagsüber achtest du nur darauf, ob dieser Dieb auftaucht. Nicht bewerten, nur bemerken.',
         'Abends notierst du drei Dinge, für die du dankbar bist, und einen Menschen, den du feiern willst.'] },
       { h:'Nach 30 Tagen', p:[
         'Der Rückblick zeigt dir, welcher Dieb dich tatsächlich bestohlen hat.',
-        '„Tag 12 von 30“ zählt eingetragene Tage, nicht Kalendertage. 30 Tage dürfen 45 dauern.',
-        'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.'] },
+        '30 Tage sind ein guter Anfang, kein Abschluss. Die Diebe kommen wieder – das Bemerken bleibt Übung.',
+        '„Tag 12 von 30“ zählt eingetragene Tage, nicht Kalendertage. 30 Tage dürfen 45 dauern.'] },
       { h:'Das Buch', p:[
-        'Die Idee der fünf Diebe stammt von John Izzo. Diese App ersetzt das Buch nicht – sie macht aus der Übung darin eine tägliche Gewohnheit.'] }
+        'Die Idee der fünf Diebe stammt von John Izzo. Diese App ersetzt das Buch nicht – sie macht aus der Übung darin eine tägliche Gewohnheit.',
+        'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.'] }
     ],
     morning:'Morgens', daytime:'Tagsüber', evening:'Abends',
     step:(a,b)=>`Schritt ${a} von ${b}`,
@@ -274,7 +278,7 @@ const I18N = {
     celebrated:'Gefeiert',
     edit_check:'Antwort ändern', edit_journal:'Journal ändern',
     tomorrow:'Morgen fängt es von vorn an – fünf Mantras, ein Fokus.',
-    thirty:'Die 30 Tage sind geschafft. Du brauchst das hier nicht mehr – der Wissende in dir ist wach. Sieh dir den Rückblick an und lass die App los.',
+    thirty:'Die 30 Tage sind geschafft – ein guter Anfang. Der Wissende in dir ist wach, aber die Diebe kommen wieder: Das Bemerken bleibt Übung. Sieh dir den Rückblick an und mach weiter.',
     r_h:'Was dich bestohlen hat',
     r_l:(n)=>`Bisher ${n===1?'ein Tag':`${n} Tage`}. Die Zahlen: aufgetaucht / im Fokus.`,
     r_empty:'Noch nichts festgehalten. Beginne einen Morgen, dann erscheint hier dein Muster.',
@@ -296,16 +300,20 @@ const I18N = {
     intro:[
       { h:'The five thieves', p:[
         'John Izzo describes five habits of mind that steal our happiness. He calls them the five thieves of happiness.'] },
+      { h:'What it is for', p:[
+        'This is a training, not a test. The thieves don’t go away because you understand them — they lose their grip when you catch them during the day.',
+        'That is what the mantras are for: each one answers its thief. You say them in the morning and carry one through the day.'] },
       { h:'How a day runs', p:[
         'In the morning you say the five mantras, one after another, and pick one of them as your focus for the day.',
         'During the day you only notice whether that thief shows up. Don’t judge it, just notice.',
         'In the evening you note three things you are grateful for and one person you want to celebrate.'] },
       { h:'After 30 days', p:[
         'The review shows you which thief actually stole from you.',
-        '“Day 12 of 30” counts days you logged, not calendar days. Thirty days may take forty-five.',
-        'Everything stays on this device. No account, no server.'] },
+        'Thirty days is a good start, not a finish. The thieves come back — noticing them stays a practice.',
+        '“Day 12 of 30” counts days you logged, not calendar days. Thirty days may take forty-five.'] },
       { h:'The book', p:[
-        'The idea of the five thieves is John Izzo’s. This app doesn’t replace the book — it turns the exercise in it into a daily habit.'] }
+        'The idea of the five thieves is John Izzo’s. This app doesn’t replace the book — it turns the exercise in it into a daily habit.',
+        'Everything stays on this device. No account, no server.'] }
     ],
     morning:'Morning', daytime:'During the day', evening:'Evening',
     step:(a,b)=>`Step ${a} of ${b}`,
@@ -336,7 +344,7 @@ const I18N = {
     celebrated:'Celebrated',
     edit_check:'Change the answer', edit_journal:'Edit the journal',
     tomorrow:'Tomorrow it starts over — five mantras, one focus.',
-    thirty:'Thirty days are full. You don’t need this any more — the Knower is awake. Look at the review, then let the app go.',
+    thirty:'Thirty days done — a good start. The Knower in you is awake, but the thieves come back: noticing them stays a practice. Look at the review, then keep going.',
     r_h:'What stole from you',
     r_l:(n)=>`${n} ${n===1?'day':'days'} begun. The number: showed up / in focus.`,
     r_empty:'Nothing logged yet. Begin a morning and your pattern will appear here.',
