@@ -150,6 +150,7 @@
   <header class="top">
     <div class="mark" id="mark"></div>
     <div class="topright">
+      <button class="linky" id="wordBtn"></button>
       <button class="linky" id="navBtn"></button>
       <div class="lang">
         <button id="de" aria-pressed="true">DE</button><i>/</i><button id="en" aria-pressed="false">EN</button>
@@ -170,53 +171,64 @@ const THIEVES = [
   { id:'control',
     de:{ n:'Kontrolle',      a:'die',
          m:'Ich entscheide mich für diesen Augenblick und nehme an, was ist. Das Glück liegt nicht in dem Ergebnis, das ich suche.',
+         mod:'Ich bin für das da, was gerade ist – nicht für das, was dabei herauskommt.',
          d:'Der Glaube, Menschen und den Lauf der Dinge lenken zu können.' },
     en:{ n:'Control',
          m:'I choose to be in the present moment and to embrace whatever is. Happiness is not in the outcome I seek.',
+         mod:'I’m here for what’s actually happening, not for how it turns out.',
          d:'The belief that outcomes and people can be steered.' } },
   { id:'conceit',
     de:{ n:'Eitelkeit',      a:'die',
-         m:'Ich bin mit allem verbunden, was ist. Wenn ich zum Wohl des Ganzen beitrage, findet das Glück mich von selbst.',
+         m:'Ich bin mit allem verbunden, was ist. Wenn ich zum Wohl des Ganzen beitrage, kommt das Glück von selbst zu mir.',
+         mod:'Ich bin Teil von etwas Größerem. Was ich beitrage, kommt zu mir zurück.',
          d:'Das Ego, das sich abgrenzt und zu wichtig nimmt.' },
     en:{ n:'Conceit',
          m:'I am connected to all that is, and if I can contribute to the good of the whole, happiness will find me.',
+         mod:'I’m part of something bigger. What I put in comes back to me.',
          d:'The ego that holds itself separate and important.' } },
   { id:'coveting',
     de:{ n:'Begehren',       a:'das',
-         m:'Das Leben ist kein Wettbewerb. Ich bin dankbar für das, was ich habe, und für den, der ich bin. Ich freue mich über den Erfolg anderer – wer sich für andere freut, ist glücklich.',
+         m:'Das Leben ist kein Wettbewerb. Ich bin dankbar für das, was ich habe, und für das, was ich bin. Ich freue mich über den Erfolg anderer – wer sich für andere freut, ist glücklich.',
+         mod:'Das hier ist kein Wettkampf. Ich habe genug – und der Erfolg anderer nimmt mir nichts weg.',
          d:'Immer das Nächste wollen – oder das, was andere haben.' },
     en:{ n:'Coveting',
          m:'Life is not a contest. I will be grateful for what I have and who I am. I will celebrate the success of others, for when I celebrate for others, I am happy.',
+         mod:'This isn’t a competition. I have enough — and someone else winning takes nothing from me.',
          d:'Always wanting the next thing, or what others have.' } },
   { id:'consumption',
     de:{ n:'Anhäufung',      a:'die',
-         m:'Ich kann mich jetzt für Glück und Zufriedenheit entscheiden. Beides entsteht in meinem Kopf, nicht aus dem, was gerade passiert. Jetzt wähle ich das Glück.',
+         m:'Ich kann mich jetzt für Glück und Zufriedenheit entscheiden. Beides entsteht in meinem Kopf, nicht durch das, was gerade passiert. Jetzt wähle ich das Glück.',
+         mod:'Zufriedenheit ist eine Entscheidung, und ich kann sie jetzt treffen. Mehr Zeug nimmt sie mir nicht ab.',
          d:'Mehr Dinge, mehr Erfolge, mehr Erlebnisse – nie genug.' },
     en:{ n:'Consumption',
          m:'I can choose happiness and contentment right now. It is a product of my mind, not a result of what is happening. Right now I will choose happiness.',
+         mod:'Contentment is a decision, and I can make it now. More stuff won’t make it for me.',
          d:'More things, more wins, more experiences — never enough.' } },
   { id:'comfort',
     de:{ n:'Bequemlichkeit', a:'die',
-         m:'Ich bin nicht meine Muster. Nur weil etwas meine gewohnte Spur ist, heißt das nicht, dass sie mir guttut. Ich kann einen neuen Weg wählen.',
+         m:'Ich bin nicht meine Muster. Nur weil eine Spur die gewohnte ist, heißt das nicht, dass sie mir guttut. Ich kann einen neuen Weg wählen.',
+         mod:'Ich bin nicht meine Gewohnheiten. Vertraut heißt nicht gut für mich – ich kann anders abbiegen.',
          d:'Risiko und Unbehagen aus dem Weg gehen.' },
     en:{ n:'Comfort',
          m:'I am not my patterns. Just because this is my habitual channel, it doesn’t mean it serves me. I can choose a new path.',
+         mod:'I’m not my habits. Familiar doesn’t mean good for me — I can turn somewhere else.',
          d:'Avoiding risk and discomfort.' } }
 ];
 
 const I18N = {
   de:{
     nav_log:'Rückblick', nav_back:'Zurück',
+    v_orig:'Original', v_mod:'Modern', v_aria:'Fassung der Mantras wechseln',
     morning:'Morgens', daytime:'Tagsüber', evening:'Abends',
     step:(a,b)=>`Schritt ${a} von ${b}`,
     day:(n)=>`Tag ${n} von 30`,
     catchup:(d)=>`Nachtrag · ${d}`,
     catchup_l:'Gestern ist offen geblieben. Schließ den Tag in Ruhe ab – danach beginnt heute.',
     recite_h:'Die fünf Mantras',
-    recite_l:'Sprich jeden einmal, laut oder leise, und lass ihn einen Atemzug lang nachklingen.',
+    recite_l:'Sprich jedes einmal, laut oder leise, und lass es einen Atemzug lang nachklingen.',
     next:'Weiter',
     focus_h:'Welches Mantra begleitet dich heute?',
-    focus_l:'Einer genügt. Vorgeschlagen ist der nächste in der Reihe – du kannst auch einen anderen nehmen.',
+    focus_l:'Eines genügt. Vorgeschlagen ist das nächste in der Reihe – du kannst auch ein anderes nehmen.',
     start:'Tag beginnen',
     todays:'Dein Mantra für heute',
     check_h:(n)=>`Ist ${n} heute aufgetaucht?`,
@@ -236,9 +248,9 @@ const I18N = {
     celebrated:'Gefeiert',
     edit_check:'Antwort ändern', edit_journal:'Journal ändern',
     tomorrow:'Morgen fängt es von vorn an – fünf Mantras, ein Fokus.',
-    thirty:'Die 30 Tage sind voll. Du brauchst das hier nicht mehr – der Wissende in dir ist wach. Sieh dir den Rückblick an und lass die App los.',
+    thirty:'Die 30 Tage sind geschafft. Du brauchst das hier nicht mehr – der Wissende in dir ist wach. Sieh dir den Rückblick an und lass die App los.',
     r_h:'Was dich bestohlen hat',
-    r_l:(n)=>`${n===1?'Ein Tag':`${n} Tage`} begonnen. Die Zahlen: aufgetaucht / im Fokus.`,
+    r_l:(n)=>`Bisher ${n===1?'ein Tag':`${n} Tage`}. Die Zahlen: aufgetaucht / im Fokus.`,
     r_empty:'Noch nichts festgehalten. Beginne einen Morgen, dann erscheint hier dein Muster.',
     r_stat:(a,b)=>`An ${a} von ${b} beantworteten Tagen kam der Dieb trotz Fokus.`,
     r_days:'Die einzelnen Tage',
@@ -249,6 +261,7 @@ const I18N = {
   },
   en:{
     nav_log:'Review', nav_back:'Back',
+    v_orig:'Original', v_mod:'Modern', v_aria:'Switch the wording of the mantras',
     morning:'Morning', daytime:'During the day', evening:'Evening',
     step:(a,b)=>`Step ${a} of ${b}`,
     day:(n)=>`Day ${n} of 30`,
@@ -324,7 +337,7 @@ const store = {
  *  }
  * ================================================================== */
 
-let S = { version:2, lang:'de', days:{} };
+let S = { version:2, lang:'de', wording:'orig', days:{} };   // wording: 'orig' | 'mod'
 
 const ui = {
   view:'flow',        // 'flow' | 'review'
@@ -338,7 +351,7 @@ const ui = {
 const t    = () => I18N[S.lang];
 const T5   = (id) => THIEVES.find(x=>x.id===id);
 const name = (id) => T5(id)[S.lang].n;
-const say  = (id) => T5(id)[S.lang].m;
+const say  = (id) => { const x = T5(id)[S.lang]; return S.wording==='mod' ? x.mod : x.m; };
 /* German needs the article to read as a sentence: "Ist die Kontrolle …" */
 const artName = (id) => { const x = T5(id)[S.lang]; return x.a ? `${x.a} ${x.n}` : x.n; };
 
@@ -525,7 +538,7 @@ function ReciteView(){
     list.appendChild(el(`
       <div class="mantra">
         <div class="who">${th[S.lang].n}</div>
-        <div class="say">${th[S.lang].m}</div>
+        <div class="say">${say(th.id)}</div>
       </div>`));
   });
   w.appendChild(list);
@@ -764,6 +777,10 @@ function render(){
   $('de').setAttribute('aria-pressed', S.lang==='de');
   $('en').setAttribute('aria-pressed', S.lang==='en');
   $('navBtn').textContent = ui.view==='flow' ? t().nav_log : t().nav_back;
+  /* like navBtn, this shows where it takes you, not where you are */
+  $('wordBtn').textContent = S.wording==='orig' ? t().v_mod : t().v_orig;
+  $('wordBtn').setAttribute('aria-label', t().v_aria);
+  $('wordBtn').title = t().v_aria;
 
   $('view').innerHTML = '';
   $('view').appendChild(ui.view==='review' ? ReviewView() : VIEWS[ui.step]());
@@ -776,6 +793,7 @@ function render(){
 $('de').onclick = async ()=>{ S.lang='de'; await save(); render(); };
 $('en').onclick = async ()=>{ S.lang='en'; await save(); render(); };
 $('navBtn').onclick = ()=>{ ui.view = ui.view==='flow' ? 'review' : 'flow'; render(); };
+$('wordBtn').onclick = async ()=>{ S.wording = S.wording==='mod' ? 'orig' : 'mod'; await save(); render(); };
 
 (async function init(){
   const raw = await store.get();
