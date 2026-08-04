@@ -260,7 +260,7 @@ const THIEVES = [
          m:'I choose to be in the present moment and to embrace whatever is. Happiness is not in the outcome I seek.',
          d:'The belief that outcomes and people can be steered.' } },
   { id:'conceit',
-    de:{ n:'Eitelkeit',      a:'die',
+    de:{ n:'Hochmut',        a:'der',
          m:'Ich bin mit allem verbunden, was ist. Wenn ich zum Wohl des Ganzen beitrage, kommt das Glück von selbst zu mir.',
          d:'Das Ego, das sich abgrenzt und zu wichtig nimmt.' },
     en:{ n:'Conceit',
@@ -274,7 +274,7 @@ const THIEVES = [
          m:'Life is not a contest. I will be grateful for what I have and who I am. I will celebrate the success of others, for when I celebrate for others, I am happy.',
          d:'Always wanting the next thing, or what others have.' } },
   { id:'consumption',
-    de:{ n:'Anhäufung',      a:'die',
+    de:{ n:'Konsum',         a:'der',
          m:'Ich kann mich jetzt für Glück und Zufriedenheit entscheiden. Beides entsteht in meinem Kopf, nicht durch das, was gerade passiert. Jetzt wähle ich das Glück.',
          d:'Mehr Dinge, mehr Erfolge, mehr Erlebnisse – nie genug.' },
     en:{ n:'Consumption',
@@ -293,14 +293,14 @@ const I18N = {
   de:{
     nav_log:'Rückblick', nav_back:'Zurück',
     i_about:'Was ist das?', i_skip:'Überspringen',
-    i_kebab:'Die Anfangsbuchstaben ergeben das Merkwort KEBAB.',
+    i_kebab:'',
     i_book:'Das Buch dazu:',
-    i_book_t:'John Izzo: Die fünf Diebe des Glücks',
+    i_book_t:'John Izzo: Die fünf großen Glücksdiebe',
     i_url:'https://amzn.eu/d/0gEEW3as',
     i_start:'Los geht’s',
     intro:[
       { title:'Die fünf Diebe des Glücks', book:true },
-      { p:'John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen. Er nennt sie die fünf Diebe des Glücks.' },
+      { p:'John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen. Er nennt sie die fünf großen Glücksdiebe.' },
       { names:true },
       { p:'Du übst hier eine Gewohnheit ein: die fünf Diebe zu erkennen, während sie am Werk sind.' },
       { p:'Je öfter du sie erwischst, desto weniger Macht haben sie – mit der Zeit tauchen sie seltener auf und nehmen dir weniger weg.' },
@@ -648,12 +648,12 @@ function IntroView(){
     } else {
       const p = el('<div class="prose"></div>');
       if (st.p) p.appendChild(el(`<p>${st.p}</p>`));
-      if (st.names){                             // the five, with KEBAB down the initials
+      if (st.names){                             // the five, in the book's order
         const names = el('<div class="names"></div>');
         THIEVES.forEach(th=>names.appendChild(el(
-          `<div><span class="g">${S.lang==='de' ? th.de.n[0] : '·'}</span><span class="n">${th[S.lang].n}</span></div>`)));
+          `<div><span class="g">·</span><span class="n">${th[S.lang].n}</span></div>`)));
         p.appendChild(names);
-        p.appendChild(el(`<p class="note">${t().i_kebab}</p>`));
+        if (t().i_kebab) p.appendChild(el(`<p class="note">${t().i_kebab}</p>`));
       }
       if (st.book) p.appendChild(bookP());
       pg.appendChild(p);

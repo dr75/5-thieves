@@ -14,19 +14,20 @@ Läuft unter / Live at: **<https://happy.reb00t.io>**
 
 | DE | EN |
 |---|---|
-| **K**ontrolle | Control |
-| **E**itelkeit | Conceit |
-| **B**egehren | Coveting |
-| **A**nhäufung | Consumption |
-| **B**equemlichkeit | Comfort |
+| Kontrolle | Control |
+| Hochmut | Conceit |
+| Begehren | Coveting |
+| Konsum | Consumption |
+| Bequemlichkeit | Comfort |
 
-Die deutsche Merkhilfe ist **KEBAB**. Im Englischen fangen alle fünf mit C an,
-darum gibt es dort keine.
+Die deutschen Namen sind die der deutschen Ausgabe (*Die fünf großen
+Glücksdiebe*, Goldmann, übers. Gaby van Dam). Im Englischen fangen alle fünf
+mit C an.
 
 ## Was es bewusst nicht tut / Deliberate non-features
 
 - keine Streaks, keine Punkte, keine Belohnungen — eine gamifizierte Version
-  dieser Übung wäre Begehren und Anhäufung im Kostüm
+  dieser Übung wäre Begehren und Konsum im Kostüm
 - kein Konto, kein Server, kein Tracking; alles liegt im `localStorage`
 - keine Push-Notifications; zwei wiederkehrende Erinnerungen in der
   Erinnerungen- oder Kalender-App mit Link auf die Seite erledigen das besser
