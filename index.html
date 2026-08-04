@@ -64,6 +64,11 @@
                font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--mute)}
   .prose .book a{color:var(--accent);text-underline-offset:3px}
 
+  .names{margin:2px 0 14px;border-top:1px solid var(--line)}
+  .names div{display:flex;gap:13px;align-items:baseline;padding:9px 4px;border-bottom:1px solid var(--line)}
+  .names .g{font-family:var(--display);font-weight:800;font-size:16px;color:var(--accent);width:13px;flex:none}
+  .names .n{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.01em}
+
   /* ---- headers ---- */
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
   .daycount{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--mute);margin-top:5px}
@@ -220,15 +225,26 @@ const THIEVES = [
 const I18N = {
   de:{
     nav_log:'Rückblick', nav_back:'Zurück',
-    i_h:'Fünf Diebe, 30 Tage',
-    i_p1:'John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen: Kontrolle, Eitelkeit, Begehren, Anhäufung und Bequemlichkeit. Die Anfangsbuchstaben ergeben das Merkwort KEBAB.',
-    i_p2:'So läuft ein Tag: morgens sprichst du die fünf Mantras und wählst eines als Fokus. Tagsüber achtest du darauf, ob dieser Dieb auftaucht. Abends notierst du drei Dinge, für die du dankbar bist, und einen Menschen, den du feiern willst.',
-    i_p3:'Nach 30 Tagen zeigt der Rückblick, welcher Dieb dich tatsächlich bestohlen hat. Das Merkwort oben links führt dich jederzeit hierher zurück.',
+    i_about:'Was ist das?',
+    i_kebab:'Die Anfangsbuchstaben ergeben das Merkwort KEBAB.',
     i_book:'Das Buch dazu:',
     i_book_t:'John Izzo: Die fünf Diebe des Glücks',
     i_url:'https://amzn.eu/d/0gEEW3as',
     i_start:'Los geht’s',
-    i_about:'Was ist das?',
+    intro:[
+      { h:'Die fünf Diebe', p:[
+        'John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen. Er nennt sie die fünf Diebe des Glücks.'] },
+      { h:'So läuft ein Tag', p:[
+        'Morgens sprichst du die fünf Mantras, eines nach dem anderen, und wählst eines davon als Fokus für den Tag.',
+        'Tagsüber achtest du nur darauf, ob dieser Dieb auftaucht. Nicht bewerten, nur bemerken.',
+        'Abends notierst du drei Dinge, für die du dankbar bist, und einen Menschen, den du feiern willst.'] },
+      { h:'Nach 30 Tagen', p:[
+        'Der Rückblick zeigt dir, welcher Dieb dich tatsächlich bestohlen hat.',
+        '„Tag 12 von 30“ zählt eingetragene Tage, nicht Kalendertage. 30 Tage dürfen 45 dauern.',
+        'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.'] },
+      { h:'Das Buch', p:[
+        'Die Idee der fünf Diebe stammt von John Izzo. Diese App ersetzt das Buch nicht – sie macht aus der Übung darin eine tägliche Gewohnheit.'] }
+    ],
     morning:'Morgens', daytime:'Tagsüber', evening:'Abends',
     step:(a,b)=>`Schritt ${a} von ${b}`,
     day:(n)=>`Tag ${n} von 30`,
@@ -271,15 +287,26 @@ const I18N = {
   },
   en:{
     nav_log:'Review', nav_back:'Back',
-    i_h:'Five thieves, 30 days',
-    i_p1:'John Izzo describes five habits of mind that steal our happiness: Control, Conceit, Coveting, Consumption and Comfort.',
-    i_p2:'A day goes like this: in the morning you say the five mantras and pick one as your focus. During the day you notice whether that thief shows up. In the evening you note three things you are grateful for and one person you want to celebrate.',
-    i_p3:'After 30 days the review shows which thief actually stole from you. The wordmark in the top left brings you back here at any time.',
+    i_about:'What is this?',
+    i_kebab:'In English all five begin with a C.',
     i_book:'The book:',
     i_book_t:'John Izzo: The Five Thieves of Happiness',
     i_url:'https://amzn.eu/d/0eAXp9t8',
     i_start:'Start',
-    i_about:'What is this?',
+    intro:[
+      { h:'The five thieves', p:[
+        'John Izzo describes five habits of mind that steal our happiness. He calls them the five thieves of happiness.'] },
+      { h:'How a day runs', p:[
+        'In the morning you say the five mantras, one after another, and pick one of them as your focus for the day.',
+        'During the day you only notice whether that thief shows up. Don’t judge it, just notice.',
+        'In the evening you note three things you are grateful for and one person you want to celebrate.'] },
+      { h:'After 30 days', p:[
+        'The review shows you which thief actually stole from you.',
+        '“Day 12 of 30” counts days you logged, not calendar days. Thirty days may take forty-five.',
+        'Everything stays on this device. No account, no server.'] },
+      { h:'The book', p:[
+        'The idea of the five thieves is John Izzo’s. This app doesn’t replace the book — it turns the exercise in it into a daily habit.'] }
+    ],
     morning:'Morning', daytime:'During the day', evening:'Evening',
     step:(a,b)=>`Step ${a} of ${b}`,
     day:(n)=>`Day ${n} of 30`,
@@ -364,6 +391,7 @@ const ui = {
   catchup:false,      // working on yesterday, not today
   editing:false,      // re-entered a step from the done screen
   rec:0,              // which of the five is being recited
+  intro:0,            // which onboarding screen
   focusPick:null, showed:null, note:'', grats:['','',''], celeb:''
 };
 
@@ -551,18 +579,41 @@ function dayLabel(){
 
 /* --- what this is, and the book behind it -------------------------- */
 function IntroView(){
+  const steps = t().intro;
+  const i = Math.min(ui.intro, steps.length-1), st = steps[i], last = i === steps.length-1;
   const w = el('<section></section>');
   w.appendChild(el(`<div class="eyebrow">${t().i_about}</div>`));
-  w.appendChild(el(`<h1>${t().i_h}</h1>`));
+  w.appendChild(el(`<h1>${st.h}</h1>`));
+
   const p = el('<div class="prose"></div>');
-  [t().i_p1, t().i_p2, t().i_p3].forEach(x=>p.appendChild(el(`<p>${x}</p>`)));
-  p.appendChild(el(`<p class="note">${t().priv}</p>`));
-  p.appendChild(el(`<p class="book">${t().i_book}<br><a href="${t().i_url}" target="_blank" rel="noopener noreferrer">${t().i_book_t}</a></p>`));
+  st.p.forEach(x=>p.appendChild(el(`<p>${x}</p>`)));
+
+  if (i === 0){                                  // name the five, KEBAB down the side
+    const names = el('<div class="names"></div>');
+    THIEVES.forEach(th=>names.appendChild(el(
+      `<div><span class="g">${S.lang==='de' ? th.de.n[0] : '·'}</span><span class="n">${th[S.lang].n}</span></div>`)));
+    p.appendChild(names);
+    p.appendChild(el(`<p class="note">${t().i_kebab}</p>`));
+  }
+  if (last) p.appendChild(el(
+    `<p class="book">${t().i_book}<br><a href="${t().i_url}" target="_blank" rel="noopener noreferrer">${t().i_book_t}</a></p>`));
   w.appendChild(p);
-  const btn = el(`<button class="save">${t().i_start}</button>`);
-  btn.onclick = async ()=>{ S.seen = true; await save(); ui.view = 'flow'; render(); };
+
+  w.appendChild(el(`<div class="count">${i+1} / ${steps.length}</div>`));
+  const btn = el(`<button class="save">${last ? t().i_start : t().next}</button>`);
+  btn.onclick = async ()=>{
+    if (!last){ ui.intro = i+1; render(); return; }
+    await leaveIntro();
+  };
   w.appendChild(btn);
   return w;
+}
+
+/* Reading it once is enough -- leaving by any route counts as read. */
+async function leaveIntro(){
+  ui.view = 'flow';
+  if (!S.seen){ S.seen = true; await save(); }
+  render();
 }
 
 /* --- morning 1/2: recite the five ---------------------------------- */
@@ -826,8 +877,10 @@ function render(){
 
 $('de').onclick = async ()=>{ S.lang='de'; await save(); render(); };
 $('en').onclick = async ()=>{ S.lang='en'; await save(); render(); };
-$('navBtn').onclick = ()=>{ ui.view = ui.view==='flow' ? 'review' : 'flow'; render(); };
-$('mark').onclick = ()=>{ ui.view = ui.view==='intro' ? 'flow' : 'intro'; render(); };
+$('navBtn').onclick = ()=>{ if (ui.view==='intro') return leaveIntro();
+                            ui.view = ui.view==='flow' ? 'review' : 'flow'; render(); };
+$('mark').onclick = ()=>{ if (ui.view==='intro') return leaveIntro();
+                          ui.intro = 0; ui.view = 'intro'; render(); };
 
 (async function init(){
   const raw = await store.get();
