@@ -29,27 +29,52 @@
     --line:var(--dusk-line); --accent:var(--dusk-accent); --fill:var(--dusk-fill);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%;height:100%}
+  html{-webkit-text-size-adjust:100%;height:100%;overflow-x:hidden}
   body{
     background:var(--bg); color:var(--ink); font-family:var(--body);
-    font-size:17px; line-height:1.5; height:100dvh; overflow:hidden;
+    font-size:17px; line-height:1.5; height:100dvh; overflow:hidden; overflow-x:hidden;
+    overflow-wrap:break-word;
     transition:background-color .7s ease, color .7s ease;
     padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
   .wrap{max-width:460px;margin:0 auto;padding:16px 20px 20px;height:100%;display:flex;flex-direction:column}
   /* only this pane may scroll, and only when a day list outgrows it */
-  #view{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
-  #view>section{animation:rise .38s ease both;padding-bottom:8px;
-                min-height:100%;display:flex;flex-direction:column}
+  #view{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;position:relative}
+  #view.paging{overflow:hidden}                      /* the leaving page must not add scroll */
+  #view>section{padding-bottom:8px;min-height:100%;display:flex;flex-direction:column}
+  #view>section.leaving{position:absolute;inset:0;pointer-events:none}
+  /* one page slides up out of the way while the next comes up from below */
+  .in-fwd {animation:inUp   .42s cubic-bezier(.22,.61,.36,1) both}
+  .out-fwd{animation:outUp  .34s cubic-bezier(.55,.06,.68,.19) both}
+  .in-back{animation:inDown .42s cubic-bezier(.22,.61,.36,1) both}
+  .out-back{animation:outDown .34s cubic-bezier(.55,.06,.68,.19) both}
+  @keyframes inUp   {from{opacity:0;transform:translate3d(0,34px,0)} to{opacity:1;transform:none}}
+  @keyframes outUp  {from{opacity:1;transform:none} to{opacity:0;transform:translate3d(0,-34px,0)}}
+  @keyframes inDown {from{opacity:0;transform:translate3d(0,-34px,0)}to{opacity:1;transform:none}}
+  @keyframes outDown{from{opacity:1;transform:none} to{opacity:0;transform:translate3d(0,34px,0)}}
   .fill{flex:1 1 auto;min-height:0}
-  #view>section.intro{text-align:center}
-  .intro .prose p{margin-left:auto;margin-right:auto;font-weight:600}
-  .intro .prose .note,.intro .prose .book{font-weight:400}
+  #view>section.intro{text-align:center;padding-bottom:0;height:100%;min-height:0}
+  /* every start page is one snap stop; swiping is the only control */
+  .intro-scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;
+                scroll-snap-type:y mandatory;overscroll-behavior:contain;
+                -webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
+  .intro-scroll::-webkit-scrollbar{display:none}
+  .intro-page{min-height:100%;scroll-snap-align:start;scroll-snap-stop:always;
+              display:flex;flex-direction:column;justify-content:center;padding:6px 0}
+  .intro-end{min-height:100%;scroll-snap-align:start}   /* swipe into this and the day begins */
+  .intro .dots{margin:0 0 8px;flex:none}
+  .intro .prose p{margin:0 auto;max-width:none;font-family:var(--display);font-weight:600;
+                  font-size:clamp(26px,7.6vw,34px);line-height:1.2;letter-spacing:-.024em}
+  /* the page that also lists the five needs a smaller statement */
+  .intro-page.has-names .prose p{font-size:clamp(21px,5.6vw,25px);line-height:1.26}
+  .intro .prose .note{font-family:var(--body);font-weight:400;font-size:14px;
+                      letter-spacing:0;line-height:1.5;margin-top:16px}
+  .intro .prose .book{font-family:var(--mono);font-weight:400;font-size:13px;letter-spacing:0;line-height:1.6}
   .intro .names{max-width:224px;margin-left:auto;margin-right:auto;text-align:left}
   .intro .lede,.intro h1{max-width:none}
-  .intro h1.title{font-size:31px;line-height:1.18;margin:0;max-width:12ch;margin-left:auto;margin-right:auto}
+  .intro h1.title{font-size:clamp(34px,9.8vw,46px);line-height:1.06;letter-spacing:-.032em;
+                  margin:0 auto;max-width:11ch}
   .next+.dots{margin-top:0}
-  @keyframes rise{from{opacity:0}to{opacity:1}}
 
   /* ---- masthead ---- */
   .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:20px;flex:none}
@@ -75,10 +100,10 @@
                font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--mute)}
   .prose .book a{color:var(--accent);text-underline-offset:3px}
 
-  .names{margin:2px 0 14px;border-top:1px solid var(--line)}
+  .names{margin:22px 0 0;border-top:1px solid var(--line)}
   .names div{display:flex;gap:13px;align-items:baseline;padding:9px 4px;border-bottom:1px solid var(--line)}
-  .names .g{font-family:var(--display);font-weight:800;font-size:16px;color:var(--accent);width:13px;flex:none}
-  .names .n{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.01em}
+  .names .g{font-family:var(--display);font-weight:800;font-size:17px;color:var(--accent);width:15px;flex:none}
+  .names .n{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:-.01em}
 
   /* ---- headers ---- */
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
@@ -263,20 +288,16 @@ const I18N = {
     i_start:'Los geht’s',
     intro:[
       { title:'Die fünf Diebe des Glücks' },
-      { p:['John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen. Er nennt sie die fünf Diebe des Glücks.'], names:true },
-      { p:[
-        'Du übst hier eine Gewohnheit ein: die fünf Diebe zu erkennen, während sie am Werk sind.',
-        'Je öfter du sie erwischst, desto weniger Macht haben sie – mit der Zeit tauchen sie seltener auf und nehmen dir weniger weg.',
-        'Dafür sind die Mantras da: Jedes stellt seinem Dieb etwas entgegen.'] },
-      { p:[
-        'Morgens sprichst du die fünf Mantras, eines nach dem anderen, und wählst eines davon als Fokus für den Tag.',
-        'Tagsüber merkst du, wenn dieser Dieb auftaucht – und sprichst sein Mantra noch einmal.',
-        'Abends notierst du drei Dinge, für die du dankbar bist, und einen Menschen, dem du Gutes wünschst.'] },
-      { p:[
-        'Nach 30 Tagen sind die Diebe noch nicht weg – aber es fällt dir deutlich einfacher, sie zu erkennen.'] },
-      { p:[
-        'Die Idee der fünf Diebe stammt von John Izzo. Diese App ersetzt das Buch nicht – sie macht aus der Übung darin eine tägliche Gewohnheit.',
-        'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.'], book:true }
+      { p:'John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen. Er nennt sie die fünf Diebe des Glücks.', names:true },
+      { p:'Du übst hier eine Gewohnheit ein: die fünf Diebe zu erkennen, während sie am Werk sind.' },
+      { p:'Je öfter du sie erwischst, desto weniger Macht haben sie – mit der Zeit tauchen sie seltener auf und nehmen dir weniger weg.' },
+      { p:'Dafür sind die Mantras da: Jedes stellt seinem Dieb etwas entgegen.' },
+      { p:'Morgens sprichst du die fünf Mantras, eines nach dem anderen, und wählst eines davon als Fokus für den Tag.' },
+      { p:'Tagsüber merkst du, wenn dieser Dieb auftaucht – und sprichst sein Mantra noch einmal.' },
+      { p:'Abends notierst du drei Dinge, für die du dankbar bist, und einen Menschen, dem du Gutes wünschst.' },
+      { p:'Nach 30 Tagen sind die Diebe noch nicht weg – aber es fällt dir deutlich einfacher, sie zu erkennen.' },
+      { p:'Die Idee der fünf Diebe stammt von John Izzo. Diese App ersetzt das Buch nicht – sie macht aus der Übung darin eine tägliche Gewohnheit.' },
+      { p:'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.', book:true }
     ],
     morning:'Morgens', daytime:'Tagsüber', evening:'Abends',
     step:(a,b)=>`Schritt ${a} von ${b}`,
@@ -328,20 +349,16 @@ const I18N = {
     i_start:'Start',
     intro:[
       { title:'The Five Thieves of Happiness' },
-      { p:['John Izzo describes five habits of mind that steal our happiness. He calls them the five thieves of happiness.'], names:true },
-      { p:[
-        'What you practise here is a habit: recognising the five thieves while they are at work.',
-        'The more often you catch them, the less power they have — over time they show up less often and take less from you.',
-        'That is what the mantras are for: each one answers its thief.'] },
-      { p:[
-        'In the morning you say the five mantras, one after another, and pick one of them as your focus for the day.',
-        'During the day, when that thief shows up you notice it and say its mantra again.',
-        'In the evening you note three things you are grateful for and one person you want to celebrate.'] },
-      { p:[
-        'After thirty days the thieves are not gone — but you spot them far more easily.'] },
-      { p:[
-        'The idea of the five thieves is John Izzo’s. This app doesn’t replace the book — it turns the exercise in it into a daily habit.',
-        'Everything stays on this device. No account, no server.'], book:true }
+      { p:'John Izzo describes five habits of mind that steal our happiness. He calls them the five thieves of happiness.', names:true },
+      { p:'What you practise here is a habit: recognising the five thieves while they are at work.' },
+      { p:'The more often you catch them, the less power they have — over time they show up less often and take less from you.' },
+      { p:'That is what the mantras are for: each one answers its thief.' },
+      { p:'In the morning you say the five mantras, one after another, and pick one of them as your focus for the day.' },
+      { p:'During the day, when that thief shows up you notice it and say its mantra again.' },
+      { p:'In the evening you note three things you are grateful for and one person you want to celebrate.' },
+      { p:'After thirty days the thieves are not gone — but you spot them far more easily.' },
+      { p:'The idea of the five thieves is John Izzo’s. This app doesn’t replace the book — it turns the exercise in it into a daily habit.' },
+      { p:'Everything stays on this device. No account, no server.', book:true }
     ],
     morning:'Morning', daytime:'During the day', evening:'Evening',
     step:(a,b)=>`Step ${a} of ${b}`,
@@ -502,7 +519,7 @@ function route(){
 function actRecited(){
   ui.step = 'focus';
   ui.focusPick = nextFocus();
-  render();
+  render('fwd');
 }
 
 async function actStart(){
@@ -510,7 +527,7 @@ async function actStart(){
   S.days[ui.key].focus = ui.focusPick;
   await save();
   ui.step = 'check';
-  render();
+  render('fwd');
 }
 
 async function actCheck(){
@@ -521,7 +538,7 @@ async function actCheck(){
   await save();
   if (ui.editing && d.done){ ui.editing = false; ui.step = 'done'; }
   else ui.step = 'journal';
-  render();
+  render('fwd');
 }
 
 async function actFinish(){
@@ -534,7 +551,7 @@ async function actFinish(){
   await save();
   if (ui.catchup) route();            // yesterday closed → today's morning
   else { ui.editing = false; ui.step = 'done'; }
-  render();
+  render('fwd');
 }
 
 function actEdit(step){
@@ -547,7 +564,7 @@ function actEdit(step){
     ui.celeb = (d.journal && d.journal.celebrate) || '';
   }
   ui.step = step;
-  render();
+  render('back');
 }
 
 async function actReset(){
@@ -627,33 +644,53 @@ function dayLabel(){
 /* --- what this is, and the book behind it -------------------------- */
 function IntroView(){
   const steps = t().intro;
-  const i = Math.min(ui.intro, steps.length-1), st = steps[i], last = i === steps.length-1;
   const w = el('<section class="intro"></section>');
-  w.appendChild(fill());
+  const scroller = el('<div class="intro-scroll"></div>');
 
-  if (st.title){                                 // the opening screen is the title, nothing else
-    w.appendChild(el(`<h1 class="title">${st.title}</h1>`));
-  } else {
-    const p = el('<div class="prose"></div>');
-    (st.p||[]).forEach(x=>p.appendChild(el(`<p>${x}</p>`)));
-    if (st.names){                               // the five, with KEBAB down the initials
-      const names = el('<div class="names"></div>');
-      THIEVES.forEach(th=>names.appendChild(el(
-        `<div><span class="g">${S.lang==='de' ? th.de.n[0] : '·'}</span><span class="n">${th[S.lang].n}</span></div>`)));
-      p.appendChild(names);
-      p.appendChild(el(`<p class="note">${t().i_kebab}</p>`));
+  steps.forEach(st=>{
+    const pg = el(`<div class="intro-page${st.names ? ' has-names' : ''}"></div>`);
+    if (st.title){
+      pg.appendChild(el(`<h1 class="title">${st.title}</h1>`));
+    } else {
+      const p = el('<div class="prose"></div>');
+      if (st.p) p.appendChild(el(`<p>${st.p}</p>`));
+      if (st.names){                             // the five, with KEBAB down the initials
+        const names = el('<div class="names"></div>');
+        THIEVES.forEach(th=>names.appendChild(el(
+          `<div><span class="g">${S.lang==='de' ? th.de.n[0] : '·'}</span><span class="n">${th[S.lang].n}</span></div>`)));
+        p.appendChild(names);
+        p.appendChild(el(`<p class="note">${t().i_kebab}</p>`));
+      }
+      if (st.book) p.appendChild(el(
+        `<p class="book">${t().i_book}<br><a href="${t().i_url}" target="_blank" rel="noopener noreferrer">${t().i_book_t}</a></p>`));
+      pg.appendChild(p);
     }
-    if (st.book) p.appendChild(el(
-      `<p class="book">${t().i_book}<br><a href="${t().i_url}" target="_blank" rel="noopener noreferrer">${t().i_book_t}</a></p>`));
-    w.appendChild(p);
-  }
+    scroller.appendChild(pg);
+  });
+  scroller.appendChild(el('<div class="intro-end"></div>'));
 
-  w.appendChild(fill());
-  w.appendChild(arrow(last ? t().i_start : t().next, async ()=>{
-    if (!last){ ui.intro = i+1; render(); return; }
-    await leaveIntro();
-  }));
-  w.appendChild(dots(i, steps.length));
+  const marks = dots(ui.intro, steps.length);
+  w.appendChild(scroller);
+  w.appendChild(marks);
+
+  let done = false;
+  scroller.addEventListener('scroll', ()=>{
+    const page = scroller.clientHeight || 1;
+    const i = Math.max(0, Math.min(steps.length-1, Math.round(scroller.scrollTop / page)));
+    if (i !== ui.intro){
+      ui.intro = i;
+      [...marks.children].forEach((d,k)=>d.classList.toggle('on', k===i));
+      $('navBtn').textContent = i === steps.length-1 ? t().i_start : t().i_skip;
+    }
+    // swiping on past the last page begins the day -- fire partway in, so the
+    // blank tail never fully arrives
+    if (!done && scroller.scrollTop > (steps.length - 0.55) * page){
+      done = true;
+      leaveIntro();
+    }
+  }, {passive:true});
+
+  requestAnimationFrame(()=>{ scroller.scrollTop = ui.intro * scroller.clientHeight; });
   return w;
 }
 
@@ -661,7 +698,7 @@ function IntroView(){
 async function leaveIntro(){
   ui.view = 'flow';
   if (!S.seen){ S.seen = true; await save(); }
-  render();
+  render('fwd');
 }
 
 /* --- morning 1/2: recite the five ---------------------------------- */
@@ -677,7 +714,7 @@ function ReciteView(){
       <div class="say">${say(th.id)}</div>
     </div>`));
   w.appendChild(fill());
-  w.appendChild(arrow(t().next, ()=>{ if (last) actRecited(); else { ui.rec++; render(); } }));
+  w.appendChild(arrow(t().next, ()=>{ if (last) actRecited(); else { ui.rec++; render('fwd'); } }));
   w.appendChild(dots(ui.rec, THIEVES.length));
   return w;
 }
@@ -750,7 +787,7 @@ function CheckView(){
 
   if (!ui.catchup && !ui.editing){
     const sw = el(`<div class="switch"><button class="linky">${t().change_focus}</button></div>`);
-    sw.querySelector('button').onclick = ()=>{ ui.step='focus'; ui.focusPick=d.focus; render(); };
+    sw.querySelector('button').onclick = ()=>{ ui.step='focus'; ui.focusPick=d.focus; render('back'); };
     w.appendChild(sw);
   }
   return w;
@@ -903,7 +940,8 @@ function ReviewView(){
 
 const VIEWS = { recite:ReciteView, focus:FocusView, check:CheckView, journal:JournalView, done:DoneView };
 
-function render(){
+let pageTimer = null;
+function render(dir){        // dir: 'fwd' | 'back' | undefined
   document.documentElement.lang = S.lang;
   const dusk = ui.view==='flow' && (ui.step==='journal' || ui.step==='done');
   document.body.classList.toggle('dusk', dusk);
@@ -914,15 +952,38 @@ function render(){
   $('mark').style.display = ui.view==='intro' ? 'none' : '';   // the start screens carry no wordmark
   $('de').setAttribute('aria-pressed', S.lang==='de');
   $('en').setAttribute('aria-pressed', S.lang==='en');
-  $('navBtn').textContent = ui.view==='intro' ? t().i_skip
+  $('navBtn').textContent = ui.view==='intro'
+                            ? (ui.intro >= t().intro.length-1 ? t().i_start : t().i_skip)
                           : ui.view==='flow'  ? t().nav_log : t().nav_back;
   $('mark').setAttribute('aria-label', t().i_about);
   $('mark').title = t().i_about;
 
-  $('view').innerHTML = '';
-  $('view').appendChild(ui.view==='intro'  ? IntroView()
-                      : ui.view==='review' ? ReviewView()
-                      : VIEWS[ui.step]());
+  const view = $('view');
+  const page = ui.view==='intro'  ? IntroView()
+             : ui.view==='review' ? ReviewView()
+             : VIEWS[ui.step]();
+
+  // a tap during a transition must not leave the outgoing page behind
+  clearTimeout(pageTimer);
+  view.querySelectorAll('section.leaving').forEach(n=>n.remove());
+
+  const old = dir ? view.lastElementChild : null;
+  if (!old){                                   // plain re-render: swap, no motion
+    view.innerHTML = '';
+    view.appendChild(page);
+    view.classList.remove('paging');
+    return;
+  }
+  const back = dir === 'back';
+  page.classList.add(back ? 'in-back' : 'in-fwd');
+  old.classList.add('leaving', back ? 'out-back' : 'out-fwd');
+  view.classList.add('paging');
+  view.appendChild(page);
+  pageTimer = setTimeout(()=>{
+    old.remove();
+    view.classList.remove('paging');
+    page.classList.remove('in-fwd','in-back');
+  }, 440);
 }
 
 /* ================================================================== *
@@ -932,15 +993,22 @@ function render(){
 $('de').onclick = async ()=>{ S.lang='de'; await save(); render(); };
 $('en').onclick = async ()=>{ S.lang='en'; await save(); render(); };
 $('navBtn').onclick = ()=>{ if (ui.view==='intro') return leaveIntro();
-                            ui.view = ui.view==='flow' ? 'review' : 'flow'; render(); };
+                            const toReview = ui.view==='flow';
+                            ui.view = toReview ? 'review' : 'flow';
+                            render(toReview ? 'fwd' : 'back'); };
+addEventListener('hashchange', ()=>{
+  if (location.hash === '#intro' && ui.view !== 'intro'){ ui.intro = 0; ui.view = 'intro'; render('back'); }
+});
+
 $('mark').onclick = ()=>{ if (ui.view==='intro') return leaveIntro();
-                          ui.intro = 0; ui.view = 'intro'; render(); };
+                          ui.intro = 0; ui.view = 'intro'; render('back'); };
 
 (async function init(){
   const raw = await store.get();
   if (raw){ try { S = Object.assign(S, JSON.parse(raw)); } catch(e){} }
   route();
-  if (!S.seen && !startedKeys().length) ui.view = 'intro';   // first run
+  // first run, or #intro in the URL to see the start screens again
+  if (location.hash === '#intro' || (!S.seen && !startedKeys().length)) ui.view = 'intro';
   render();
 })();
 </script>
