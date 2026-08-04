@@ -8,6 +8,8 @@ A 30-day training based on John Izzo's *The Five Thieves of Happiness*.
 Set the intention in the morning, review in the evening, and after 30 days see
 which thief actually stole from you.
 
+Läuft unter / Live at: **<https://happy.reb00t.io>**
+
 ## Die fünf Diebe / The five thieves
 
 | DE | EN |
