@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>KEBAB — 30 Tage</title>
-<meta name="description" content="Ein 30-Tage-Training nach John Izzos Fünf Dieben des Glücks. Morgens die Absicht, abends der Rückblick. Alles bleibt auf diesem Gerät.">
+<meta name="description" content="Ein 30-Tage-Training nach John Izzos Fünf Dieben des Glücks. Morgens die fünf Sätze, tagsüber der Fokus, abends das Journal. Alles bleibt auf diesem Gerät.">
 <meta name="theme-color" content="#D9E0E3">
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,13 +49,24 @@
          color:var(--mute);cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0}
   .linky:hover{color:var(--ink)}
 
-  /* ---- session header ---- */
+  /* ---- headers ---- */
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
   .daycount{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--mute);margin-top:5px}
   h1{font-family:var(--display);font-weight:600;font-size:30px;line-height:1.14;letter-spacing:-.015em;margin:16px 0 10px}
   .lede{color:var(--mute);font-size:15px;margin-bottom:30px;max-width:36ch}
 
-  /* ---- thief list ---- */
+  /* ---- mantra recital ---- */
+  .mantras{border-top:1px solid var(--line)}
+  .mantra{padding:17px 6px;border-bottom:1px solid var(--line)}
+  .mantra .who{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+  .mantra .say{font-family:var(--display);font-weight:600;font-size:19px;line-height:1.3;letter-spacing:-.01em;margin-top:4px}
+
+  /* ---- mantra of the day ---- */
+  .focus-card{border:1px solid var(--line);border-radius:2px;padding:20px 20px 22px;margin:4px 0 28px}
+  .focus-card .who{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+  .focus-card .say{font-family:var(--display);font-weight:600;font-size:23px;line-height:1.25;letter-spacing:-.015em;margin-top:6px;color:var(--accent)}
+
+  /* ---- selectable list (focus step) ---- */
   .thieves{display:flex;flex-direction:column;border-top:1px solid var(--line)}
   .thief{display:flex;align-items:flex-start;gap:14px;width:100%;text-align:left;
          background:none;border:0;border-bottom:1px solid var(--line);padding:15px 6px;
@@ -68,51 +79,65 @@
   .thief[aria-pressed="true"]{background:var(--fill)}
   .thief[aria-pressed="true"] .glyph{color:var(--accent)}
   .thief[aria-pressed="true"] .name{color:var(--accent)}
-  .nothing{margin-top:16px}
-  .nothing button{background:none;border:1px solid var(--line);border-radius:2px;color:var(--mute);
-                  font:inherit;font-size:14px;padding:9px 14px;cursor:pointer}
-  .nothing button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 
-  /* ---- note + save ---- */
+  /* ---- yes / no ---- */
+  .yn{display:flex;gap:10px}
+  .yn button{flex:1;background:none;border:1px solid var(--line);border-radius:2px;color:var(--ink);
+             font:inherit;font-size:16px;font-weight:500;padding:13px;cursor:pointer;transition:border-color .18s ease}
+  .yn button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--fill)}
+
+  /* ---- fields ---- */
   .field{margin-top:26px}
   label{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
         color:var(--mute);margin-bottom:8px}
-  textarea{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);
-           color:var(--ink);font:inherit;font-size:16px;padding:4px 0 10px;resize:none;min-height:52px}
-  textarea:focus{outline:0;border-bottom-color:var(--accent)}
-  textarea::placeholder{color:var(--mute);opacity:.65}
+  textarea,input[type=text]{
+    width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);
+    color:var(--ink);font:inherit;font-size:16px;padding:4px 0 10px}
+  textarea{resize:none;min-height:52px}
+  textarea:focus,input[type=text]:focus{outline:0;border-bottom-color:var(--accent)}
+  textarea::placeholder,input[type=text]::placeholder{color:var(--mute);opacity:.65}
+  .grat{display:flex;gap:12px;align-items:baseline;margin-top:14px}
+  .grat .n{font-family:var(--mono);font-size:12px;color:var(--mute);flex:none;width:14px}
+
+  /* ---- buttons ---- */
   .save{margin-top:30px;width:100%;background:var(--ink);color:var(--bg);border:0;border-radius:2px;
-        font:inherit;font-weight:600;font-size:16px;padding:15px;cursor:pointer;
-        transition:opacity .2s ease}
+        font:inherit;font-weight:600;font-size:16px;padding:15px;cursor:pointer;transition:opacity .2s ease}
   .save[disabled]{opacity:.28;cursor:default}
+  .hint{margin-top:14px;font-size:13.5px;color:var(--mute);border-left:2px solid var(--line);padding-left:12px}
   .footnote{margin-top:16px;font-size:13px;color:var(--mute);text-align:center}
   .switch{margin-top:22px;text-align:center}
-
-  /* ---- done state ---- */
-  .done{border-top:1px solid var(--line);padding-top:24px}
-  .done p{color:var(--mute);font-size:15px;margin-bottom:18px}
-  .recap{font-family:var(--display);font-weight:600;font-size:21px;margin-bottom:6px}
-  .recap em{font-style:normal;color:var(--accent)}
-  .quote{font-size:15px;color:var(--mute);border-left:2px solid var(--line);padding-left:12px;margin-top:10px}
-
-  /* ---- review ---- */
-  .tally{border-top:1px solid var(--line);padding-top:26px;margin-top:8px}
-  .bar{display:flex;align-items:baseline;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
-  .bar .n{font-family:var(--mono);font-size:12px;color:var(--mute);width:26px;flex:none;text-align:right}
-  .bar .w{font-family:var(--display);font-weight:600;line-height:1.05;letter-spacing:-.02em}
-  .bar:first-child .w{color:var(--accent)}
-  .section-label{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-                 color:var(--mute);margin:34px 0 12px}
-  .row{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14.5px}
-  .row .d{font-family:var(--mono);color:var(--mute);flex:none}
-  .row .v{text-align:right}
-  .row .v small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
-  .empty{color:var(--mute);font-size:15px;padding:22px 0}
   .actions{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap}
   .ghost{background:none;border:1px solid var(--line);border-radius:2px;color:var(--ink);
          font:inherit;font-size:14px;padding:10px 14px;cursor:pointer}
   .ghost:hover{border-color:var(--accent);color:var(--accent)}
   .danger{color:var(--mute)}
+
+  /* ---- done ---- */
+  .done{border-top:1px solid var(--line);padding-top:24px}
+  .done p{color:var(--mute);font-size:15px}
+  .recap{font-family:var(--display);font-weight:600;font-size:21px;margin-bottom:6px}
+  .recap em{font-style:normal;color:var(--accent)}
+  .quote{font-size:15px;color:var(--mute);border-left:2px solid var(--line);padding-left:12px;margin-top:10px}
+  .gratlist{list-style:none;margin-top:8px}
+  .gratlist li{display:flex;gap:10px;font-size:15px;padding:3px 0}
+  .gratlist .n{font-family:var(--mono);font-size:12px;color:var(--mute);flex:none;padding-top:3px}
+
+  /* ---- review ---- */
+  .tally{border-top:1px solid var(--line);padding-top:26px;margin-top:8px}
+  .bar{display:flex;align-items:baseline;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .bar .n{font-family:var(--mono);font-size:12px;color:var(--mute);width:44px;flex:none;text-align:right}
+  .bar .w{font-family:var(--display);font-weight:600;line-height:1.05;letter-spacing:-.02em}
+  .bar:first-child .w{color:var(--accent)}
+  .section-label{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+                 color:var(--mute);margin:34px 0 12px}
+  .stat{font-size:14.5px;color:var(--mute);margin-top:20px}
+  .row{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+  .row .d{font-family:var(--mono);color:var(--mute);flex:none}
+  .row .v{text-align:right}
+  .row .v strong{font-weight:600}
+  .row .v small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+  .tag{font-family:var(--mono);font-size:11px;color:var(--mute)}
+  .empty{color:var(--mute);font-size:15px;padding:22px 0}
 
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   @media (prefers-reduced-motion:reduce){*{transition:none !important}}
@@ -133,334 +158,308 @@
 </div>
 
 <script>
-/* ------------------------------------------------------------------ *
- * storage: window.storage when embedded, localStorage when self-hosted
- * ------------------------------------------------------------------ */
+'use strict';
+
+/* ================================================================== *
+ *  1 · CONTENT — the five thieves and their mantras
+ * ================================================================== */
+
+const THIEVES = [
+  { id:'control',
+    de:{ n:'Kontrolle',      m:'Ich lasse los, was ich nicht in der Hand habe.',
+         d:'Der Glaube, Ergebnisse und Menschen steuern zu können.' },
+    en:{ n:'Control',        m:'I let go of what is not mine to control.',
+         d:'The belief that outcomes and people can be steered.' } },
+  { id:'conceit',
+    de:{ n:'Eitelkeit',      m:'Ich bin Teil von etwas Größerem.',
+         d:'Das Ego, das sich für getrennt und wichtig hält.' },
+    en:{ n:'Conceit',        m:'I am part of something larger than me.',
+         d:'The ego that holds itself separate and important.' } },
+  { id:'coveting',
+    de:{ n:'Begehren',       m:'Was ich habe, ist genug.',
+         d:'Immer das Nächste wollen, oder das, was andere haben.' },
+    en:{ n:'Coveting',       m:'What is here is enough.',
+         d:'Always wanting the next thing, or what others have.' } },
+  { id:'consumption',
+    de:{ n:'Anhäufung',      m:'Glück kommt von innen, nicht von mehr.',
+         d:'Mehr Dinge, mehr Erfolge, mehr Erlebnisse — nie genug.' },
+    en:{ n:'Consumption',    m:'Happiness comes from within, not from more.',
+         d:'More things, more wins, more experiences — never enough.' } },
+  { id:'comfort',
+    de:{ n:'Bequemlichkeit', m:'Ich wachse am Unbequemen.',
+         d:'Ausweichen vor Risiko und Unbehagen.' },
+    en:{ n:'Comfort',        m:'I grow where it is uncomfortable.',
+         d:'Avoiding risk and discomfort.' } }
+];
+
+const I18N = {
+  de:{
+    nav_log:'Rückblick', nav_back:'Zurück',
+    morning:'Morgens', daytime:'Tagsüber', evening:'Abends',
+    step:(a,b)=>`Schritt ${a} von ${b}`,
+    day:(n)=>`Tag ${n} von 30`,
+    catchup:(d)=>`Nachtrag · ${d}`,
+    catchup_l:'Gestern blieb offen. Schließ es in Ruhe ab — danach beginnt der heutige Tag.',
+    recite_h:'Die fünf Sätze',
+    recite_l:'Sprich jeden einmal, laut oder leise, und lass ihn einen Atemzug lang stehen.',
+    next:'Weiter',
+    focus_h:'Welcher Satz begleitet dich heute?',
+    focus_l:'Einer genügt. Vorgeschlagen ist der nächste der Reihe — du darfst abweichen.',
+    start:'Tag beginnen',
+    todays:'Dein Satz für heute',
+    check_h:(n)=>`Ist ${n} aufgetaucht?`,
+    check_l:'Nicht bewerten, nur bemerken.',
+    check_hint:'Beantworte das am besten erst am Ende des Tages — einmal genügt.',
+    check_note:'Was ist passiert?', check_ph:'Kurz genügt …',
+    yes:'Ja', no:'Nein',
+    to_journal:'Weiter zum Journal',
+    change_focus:'Fokus ändern',
+    j_h:'Der Tag klingt aus',
+    j_l:'Drei Dinge, für die du heute dankbar bist — und ein Mensch, den du feiern willst.',
+    g_label:'Dankbar für', g_ph:'…',
+    c_label:'Jemanden feiern', c_ph:'Wer — und wofür?',
+    finish:'Tag abschließen',
+    done_h:'Der Tag ist abgeschlossen.',
+    showed:'Aufgetaucht', not_showed:'Nicht aufgetaucht',
+    celebrated:'Gefeiert',
+    edit_check:'Antwort ändern', edit_journal:'Journal ändern',
+    tomorrow:'Morgen beginnt es von vorn — fünf Sätze, ein Fokus.',
+    thirty:'30 Tage sind voll. Du brauchst das hier jetzt nicht mehr — der Wächter ist wach. Schau in den Rückblick und lass die App los.',
+    r_h:'Was dich bestohlen hat',
+    r_l:(n)=>`${n} ${n===1?'Tag':'Tage'} begonnen. Die Zahl: aufgetaucht / im Fokus.`,
+    r_empty:'Noch nichts festgehalten. Beginne einen Morgen, dann erscheint hier dein Muster.',
+    r_stat:(a,b)=>`An ${a} von ${b} beantworteten Tagen ist der Dieb trotz Fokus gekommen.`,
+    r_days:'Die einzelnen Tage',
+    open_tag:'offen', late_tag:'nachgetragen', none_mark:'—',
+    exp_btn:'Daten exportieren', reset:'Alles löschen',
+    reset_ask:'Alle Einträge löschen? Das lässt sich nicht rückgängig machen.',
+    priv:'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.'
+  },
+  en:{
+    nav_log:'Review', nav_back:'Back',
+    morning:'Morning', daytime:'During the day', evening:'Evening',
+    step:(a,b)=>`Step ${a} of ${b}`,
+    day:(n)=>`Day ${n} of 30`,
+    catchup:(d)=>`Catch-up · ${d}`,
+    catchup_l:'Yesterday was left open. Close it calmly — then today begins.',
+    recite_h:'The five sentences',
+    recite_l:'Say each one once, out loud or quietly, and let it stand for a breath.',
+    next:'Next',
+    focus_h:'Which sentence walks with you today?',
+    focus_l:'One is enough. The suggestion follows the rotation — feel free to deviate.',
+    start:'Begin the day',
+    todays:'Your sentence for today',
+    check_h:(n)=>`Did ${n} show up?`,
+    check_l:'Don’t judge it, just notice.',
+    check_hint:'Best answered at the end of the day — once is enough.',
+    check_note:'What happened?', check_ph:'A few words will do …',
+    yes:'Yes', no:'No',
+    to_journal:'On to the journal',
+    change_focus:'Change focus',
+    j_h:'The day winds down',
+    j_l:'Three things you are grateful for today — and one person you want to celebrate.',
+    g_label:'Grateful for', g_ph:'…',
+    c_label:'Celebrate someone', c_ph:'Who — and what for?',
+    finish:'Close the day',
+    done_h:'The day is closed.',
+    showed:'Showed up', not_showed:'Did not show up',
+    celebrated:'Celebrated',
+    edit_check:'Change the answer', edit_journal:'Edit the journal',
+    tomorrow:'Tomorrow it starts over — five sentences, one focus.',
+    thirty:'Thirty days are full. You don’t need this any more — the Knower is awake. Look at the review, then let the app go.',
+    r_h:'What stole from you',
+    r_l:(n)=>`${n} ${n===1?'day':'days'} begun. The number: showed up / in focus.`,
+    r_empty:'Nothing logged yet. Begin a morning and your pattern will appear here.',
+    r_stat:(a,b)=>`On ${a} of ${b} answered days the thief came despite the focus.`,
+    r_days:'Day by day',
+    open_tag:'open', late_tag:'late entry', none_mark:'—',
+    exp_btn:'Export data', reset:'Delete everything',
+    reset_ask:'Delete every entry? This cannot be undone.',
+    priv:'Everything stays on this device. No account, no server.'
+  }
+};
+
+/* ================================================================== *
+ *  2 · STORAGE — window.storage when embedded, localStorage otherwise
+ * ================================================================== */
+
 const KEY = 'kebab:state';
+
 const store = {
   async get(){
-    if (typeof window !== 'undefined' && window.storage) {
+    if (window.storage){
       try { const r = await window.storage.get(KEY); return r ? r.value : null; } catch(e){ return null; }
     }
     try { return localStorage.getItem(KEY); } catch(e){ return null; }
   },
   async set(v){
-    if (typeof window !== 'undefined' && window.storage) {
+    if (window.storage){
       try { await window.storage.set(KEY, v); return; } catch(e){ /* fall through */ }
     }
     try { localStorage.setItem(KEY, v); } catch(e){}
   }
 };
 
-/* ------------------------------------------------------------------ *
- * content
- * ------------------------------------------------------------------ */
-const THIEVES = [
-  { id:'control',     de:{n:'Kontrolle',      d:'Der Glaube, Ergebnisse und Menschen steuern zu können. Widerstand gegen das, was ohnehin ist.'},
-                      en:{n:'Control',        d:'The belief that outcomes and people can be steered. Resistance to what already is.'} },
-  { id:'conceit',     de:{n:'Eitelkeit',      d:'Das Ego, das sich für getrennt und wichtig hält. Vergleichen, Gekränktsein, Rechthaben.'},
-                      en:{n:'Conceit',        d:'The ego that holds itself separate and important. Comparing, taking offence, being right.'} },
-  { id:'coveting',    de:{n:'Begehren',       d:'Immer das Nächste wollen, oder das, was andere haben. Glück wandert in die Zukunft.'},
-                      en:{n:'Coveting',       d:'Always wanting the next thing, or what others have. Happiness moves into the future.'} },
-  { id:'consumption', de:{n:'Anhäufung',      d:'Mehr Dinge, mehr Erfolge, mehr Erlebnisse — dann endlich genug. Nie genug.'},
-                      en:{n:'Consumption',    d:'More things, more wins, more experiences — then finally enough. Never enough.'} },
-  { id:'comfort',     de:{n:'Bequemlichkeit', d:'Ausweichen vor Risiko und Unbehagen. Sicherheit, die das Lebendige erstickt.'},
-                      en:{n:'Comfort',        d:'Avoiding risk and discomfort. Safety that smothers what is alive.'} }
-];
+/* ================================================================== *
+ *  3 · STATE
+ *
+ *  S.days[key] = {
+ *    focus:   'control' | … ,                     day counts once this is set
+ *    check:   { showed:bool, note:'' },
+ *    journal: { grateful:[…], celebrate:'' },
+ *    done:    true,                               journal saved
+ *    late:    true                                completed on a later day
+ *  }
+ * ================================================================== */
 
-const T = {
-  de:{
-    mark:'KEBAB', nav_log:'Rückblick', nav_back:'Zurück',
-    morning:'Morgens', evening:'Abends',
-    day:(n)=>`Tag ${n} von 30`, day0:'Noch nicht begonnen',
-    m_h:'Welcher Dieb versucht es heute?',
-    m_l:'Ein Blick auf den Tag, der vor dir liegt. Wähle den, mit dem du rechnest.',
-    e_h:'Wer ist tatsächlich gekommen?',
-    e_l:'Nicht bewerten, nur bemerken. Der Wächter wird durch Wiederholung stark, nicht durch Strenge.',
-    m_note:'Woran denkst du dabei?', m_ph:'Meeting um 14 Uhr …',
-    e_note:'Was hast du dir dabei erzählt?', e_ph:'„Das ist ungerecht.“',
-    none:'Keiner war da',
-    save_m:'Absicht festhalten', save_e:'Tag abschließen',
-    priv:'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.',
-    switch_e:'Stattdessen den Abend eintragen', switch_m:'Stattdessen den Morgen eintragen',
-    done_m:'Morgen ist eingetragen.', done_e:'Der Tag ist abgeschlossen.',
-    exp:'Erwartet:', act:'Gekommen:', act_none:'Keiner',
-    tomorrow:'Weiter geht es beim nächsten Mal — morgens oder abends, wie es passt.',
-    edit:'Eintrag ändern',
-    r_h:'Was dich bestohlen hat',
-    r_l:(n)=>`${n} ${n===1?'Tag':'Tage'} festgehalten. Die Größe zeigt, wie oft.`,
-    r_empty:'Noch nichts festgehalten. Trage einen Morgen oder einen Abend ein, dann erscheint hier dein Muster.',
-    r_days:'Die einzelnen Tage', r_hit:'erwartet und gekommen',
-    r_acc:(p)=>`Bei ${p}% der Tage hast du den Dieb morgens richtig vorhergesagt.`,
-    exp_btn:'Daten exportieren', reset:'Alles löschen',
-    reset_ask:'Alle Einträge löschen? Das lässt sich nicht rückgängig machen.',
-    thirty:'30 Tage sind voll. Du brauchst das hier jetzt nicht mehr — der Wächter ist wach. Schau die Übersicht an und lass die App los.'
-  },
-  en:{
-    mark:'5 THIEVES', nav_log:'Review', nav_back:'Back',
-    morning:'Morning', evening:'Evening',
-    day:(n)=>`Day ${n} of 30`, day0:'Not started yet',
-    m_h:'Which thief will try today?',
-    m_l:'A look at the day ahead. Pick the one you expect.',
-    e_h:'Which one actually came?',
-    e_l:'Don’t judge it, just notice. The Knower gets strong through repetition, not severity.',
-    m_note:'What makes you think so?', m_ph:'That meeting at 2 …',
-    e_note:'What did you tell yourself?', e_ph:'“This is unfair.”',
-    none:'None showed up',
-    save_m:'Set the intention', save_e:'Close the day',
-    priv:'Everything stays on this device. No account, no server.',
-    switch_e:'Log the evening instead', switch_m:'Log the morning instead',
-    done_m:'Morning is logged.', done_e:'The day is closed.',
-    exp:'Expected:', act:'Came:', act_none:'None',
-    tomorrow:'Pick it up next time — morning or evening, whichever fits.',
-    edit:'Change the entry',
-    r_h:'What stole from you',
-    r_l:(n)=>`${n} ${n===1?'day':'days'} logged. Size shows how often.`,
-    r_empty:'Nothing logged yet. Enter a morning or an evening and your pattern will appear here.',
-    r_days:'Day by day', r_hit:'expected and came',
-    r_acc:(p)=>`On ${p}% of days you called the thief correctly in the morning.`,
-    exp_btn:'Export data', reset:'Delete everything',
-    reset_ask:'Delete every entry? This cannot be undone.',
-    thirty:'Thirty days are full. You don’t need this any more — the Knower is awake. Look at the review, then let the app go.'
-  }
+let S = { version:2, lang:'de', days:{} };
+
+const ui = {
+  view:'flow',        // 'flow' | 'review'
+  key:null,           // day being worked on
+  step:'recite',      // 'recite' | 'focus' | 'check' | 'journal' | 'done'
+  catchup:false,      // working on yesterday, not today
+  editing:false,      // re-entered a step from the done screen
+  focusPick:null, showed:null, note:'', grats:['','',''], celeb:''
 };
 
-/* ------------------------------------------------------------------ *
- * state
- * ------------------------------------------------------------------ */
-let S = { version:1, lang:'de', days:{} };
-let view = 'today';                     // 'today' | 'review'
-let session = null;                     // 'morning' | 'evening'
-let picked = null;                      // thief id or 'none'
-let noteText = '';
-let editing = false;
+const t    = () => I18N[S.lang];
+const T5   = (id) => THIEVES.find(x=>x.id===id);
+const name = (id) => T5(id)[S.lang].n;
+const say  = (id) => T5(id)[S.lang].m;
 
-const todayKey = () => {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-};
-const t = () => T[S.lang];
-const name = (id) => THIEVES.find(x=>x.id===id)[S.lang].n;
-const completedDays = () => Object.values(S.days).filter(d=>d.morning||d.evening).length;
+const fmtKey = (d) =>
+  `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const todayKey = () => fmtKey(new Date());
+const yesterdayKey = () => { const d = new Date(); d.setDate(d.getDate()-1); return fmtKey(d); };
+const dateLabel = (key) => key.slice(8,10) + '.' + key.slice(5,7) + '.';
 
-function defaultSession(){
-  return new Date().getHours() < 12 ? 'morning' : 'evening';
-}
+const startedKeys = () => Object.keys(S.days).filter(k=>S.days[k].focus).sort();
+const dayNumber   = (key) => startedKeys().indexOf(key) + 1;
 
 async function save(){ await store.set(JSON.stringify(S)); }
 
-/* ------------------------------------------------------------------ *
- * render
- * ------------------------------------------------------------------ */
-const el = (h) => { const d=document.createElement('div'); d.innerHTML=h.trim(); return d.firstChild; };
-const esc = (s) => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-function render(){
-  document.documentElement.lang = S.lang;
-  document.body.classList.toggle('dusk', view==='today' && session==='evening');
-  document.querySelector('meta[name=theme-color]')
-    .setAttribute('content', document.body.classList.contains('dusk') ? '#131A1E' : '#D9E0E3');
-  document.getElementById('mark').innerHTML = S.lang==='de'
-    ? '<span>K</span>EBAB' : '5 THIEVE<span>S</span>';
-  document.getElementById('de').setAttribute('aria-pressed', S.lang==='de');
-  document.getElementById('en').setAttribute('aria-pressed', S.lang==='en');
-  document.getElementById('navBtn').textContent = view==='today' ? t().nav_log : t().nav_back;
-  document.getElementById('view').innerHTML = '';
-  document.getElementById('view').appendChild(view==='today' ? Today() : Review());
+function resetTemps(){
+  ui.focusPick = null; ui.showed = null; ui.note = '';
+  ui.grats = ['','','']; ui.celeb = ''; ui.editing = false;
 }
 
-function Today(){
-  const key = todayKey();
-  const day = S.days[key] || {};
-  const entry = day[session];
-  const n = completedDays();
+/* The thief after the most recently chosen one — the rotation default. */
+function nextFocus(){
+  const keys = startedKeys();
+  if (!keys.length) return THIEVES[0].id;
+  const last = S.days[keys[keys.length-1]].focus;
+  const i = THIEVES.findIndex(x=>x.id===last);
+  return THIEVES[(i+1) % THIEVES.length].id;
+}
 
-  if (entry && !editing) return DoneCard(entry, n);
+/* ================================================================== *
+ *  4 · ROUTING — where does opening the app land you?
+ *
+ *  · today already started       → resume today at its open step
+ *  · yesterday started, not done → catch up yesterday first
+ *  · otherwise                   → today's morning (recite)
+ *  A day without a chosen focus never counts and is never caught up.
+ * ================================================================== */
 
-  const wrap = el('<section></section>');
-  wrap.appendChild(el(`
-    <div>
-      <div class="eyebrow">${session==='morning'?t().morning:t().evening}</div>
-      <div class="daycount">${n===0?t().day0:t().day(Math.min(n+ (day.morning||day.evening ?0:1),30))}</div>
-      <h1>${session==='morning'?t().m_h:t().e_h}</h1>
-      <p class="lede">${session==='morning'?t().m_l:t().e_l}</p>
-    </div>`));
+function stepOf(d){
+  if (!d || !d.focus) return 'recite';
+  if (!d.check)       return 'check';
+  if (!d.done)        return 'journal';
+  return 'done';
+}
 
-  const list = el('<div class="thieves"></div>');
-  THIEVES.forEach(th=>{
-    const b = el(`
-      <button class="thief" aria-pressed="${picked===th.id}">
-        <span class="glyph">${S.lang==='de' ? th.de.n[0] : '•'}</span>
-        <span>
-          <span class="name">${th[S.lang].n}</span>
-          <span class="desc">${th[S.lang].d}</span>
-        </span>
-      </button>`);
-    b.onclick = ()=>{ picked = picked===th.id ? null : th.id; render(); };
-    list.appendChild(b);
-  });
-  wrap.appendChild(list);
-
-  if (session==='evening'){
-    const none = el(`<div class="nothing"><button aria-pressed="${picked==='none'}">${t().none}</button></div>`);
-    none.querySelector('button').onclick = ()=>{ picked = picked==='none'?null:'none'; render(); };
-    wrap.appendChild(none);
+function route(){
+  resetTemps();
+  const today = S.days[todayKey()];
+  if (today && today.focus){
+    Object.assign(ui, { key:todayKey(), step:stepOf(today), catchup:false });
+    return;
   }
-
-  const field = el(`
-    <div class="field">
-      <label for="note">${session==='morning'?t().m_note:t().e_note}</label>
-      <textarea id="note" rows="2" placeholder="${session==='morning'?t().m_ph:t().e_ph}"></textarea>
-    </div>`);
-  const ta = field.querySelector('textarea');
-  ta.value = noteText;
-  ta.oninput = (e)=>{ noteText = e.target.value; document.querySelector('.save').disabled = !picked; };
-  wrap.appendChild(field);
-
-  const btn = el(`<button class="save" ${picked?'':'disabled'}>${session==='morning'?t().save_m:t().save_e}</button>`);
-  btn.onclick = commit;
-  wrap.appendChild(btn);
-
-  wrap.appendChild(el(`<p class="footnote">${t().priv}</p>`));
-
-  const sw = el(`<div class="switch"><button class="linky">${session==='morning'?t().switch_e:t().switch_m}</button></div>`);
-  sw.querySelector('button').onclick = ()=>{
-    session = session==='morning' ? 'evening' : 'morning';
-    const other = (S.days[key]||{})[session];
-    picked = other ? (other.thief||'none') : null;
-    noteText = other ? (other.note||'') : '';
-    editing = false; render();
-  };
-  wrap.appendChild(sw);
-  return wrap;
-}
-
-function DoneCard(entry, n){
-  const key = todayKey();
-  const day = S.days[key];
-  const wrap = el('<section></section>');
-  const full = n >= 30;
-  wrap.appendChild(el(`
-    <div>
-      <div class="eyebrow">${session==='morning'?t().morning:t().evening}</div>
-      <div class="daycount">${t().day(Math.min(n,30))}</div>
-      <h1>${session==='morning'?t().done_m:t().done_e}</h1>
-    </div>`));
-
-  const box = el('<div class="done"></div>');
-  if (day.morning) box.appendChild(el(
-    `<div class="recap">${t().exp} <em>${name(day.morning.thief)}</em></div>`));
-  if (day.morning && day.morning.note) box.appendChild(el(
-    `<div class="quote">${esc(day.morning.note)}</div>`));
-  if (day.evening) box.appendChild(el(
-    `<div class="recap" style="margin-top:18px">${t().act} <em>${day.evening.thief==='none'?t().act_none:name(day.evening.thief)}</em></div>`));
-  if (day.evening && day.evening.note) box.appendChild(el(
-    `<div class="quote">${esc(day.evening.note)}</div>`));
-  box.appendChild(el(`<p style="margin-top:22px">${full ? t().thirty : t().tomorrow}</p>`));
-  wrap.appendChild(box);
-
-  const acts = el('<div class="actions"></div>');
-  const ed = el(`<button class="ghost">${t().edit}</button>`);
-  ed.onclick = ()=>{
-    const e2 = day[session];
-    picked = e2.thief; noteText = e2.note||''; editing = true; render();
-  };
-  acts.appendChild(ed);
-  if (!day[session==='morning'?'evening':'morning']){
-    const sw = el(`<button class="ghost">${session==='morning'?t().switch_e:t().switch_m}</button>`);
-    sw.onclick = ()=>{ session = session==='morning'?'evening':'morning'; picked=null; noteText=''; editing=false; render(); };
-    acts.appendChild(sw);
+  const y = S.days[yesterdayKey()];
+  if (y && y.focus && !y.done){
+    Object.assign(ui, { key:yesterdayKey(), step:stepOf(y), catchup:true });
+    return;
   }
-  wrap.appendChild(acts);
-  return wrap;
+  Object.assign(ui, { key:todayKey(), step:'recite', catchup:false });
 }
 
-async function commit(){
-  if (!picked) return;
-  const key = todayKey();
-  S.days[key] = S.days[key] || {};
-  S.days[key][session] = { thief:picked, note:noteText.trim() };
-  picked = null; noteText = ''; editing = false;
-  await save(); render();
+/* ================================================================== *
+ *  5 · ACTIONS
+ * ================================================================== */
+
+function actRecited(){
+  ui.step = 'focus';
+  ui.focusPick = nextFocus();
+  render();
 }
 
-function Review(){
-  const wrap = el('<section></section>');
-  const keys = Object.keys(S.days).sort();
-  const n = keys.length;
+async function actStart(){
+  S.days[ui.key] = S.days[ui.key] || {};
+  S.days[ui.key].focus = ui.focusPick;
+  await save();
+  ui.step = 'check';
+  render();
+}
 
-  wrap.appendChild(el(`
-    <div>
-      <div class="eyebrow">${t().nav_log}</div>
-      <h1>${t().r_h}</h1>
-      <p class="lede">${n?t().r_l(n):''}</p>
-    </div>`));
+async function actCheck(){
+  if (ui.showed === null) return;
+  const d = S.days[ui.key];
+  d.check = { showed:ui.showed, note:ui.note.trim() };
+  if (ui.catchup) d.late = true;
+  await save();
+  if (ui.editing && d.done){ ui.editing = false; ui.step = 'done'; }
+  else ui.step = 'journal';
+  render();
+}
 
-  if (!n){
-    wrap.appendChild(el(`<p class="empty">${t().r_empty}</p>`));
-    return wrap;
+async function actFinish(){
+  const grats = ui.grats.map(g=>g.trim()).filter(Boolean);
+  if (!grats.length) return;
+  const d = S.days[ui.key];
+  d.journal = { grateful:grats, celebrate:ui.celeb.trim() };
+  d.done = true;
+  if (ui.catchup) d.late = true;
+  await save();
+  if (ui.catchup) route();            // yesterday closed → today's morning
+  else { ui.editing = false; ui.step = 'done'; }
+  render();
+}
+
+function actEdit(step){
+  const d = S.days[ui.key];
+  ui.editing = true;
+  if (step === 'check'){ ui.showed = d.check.showed; ui.note = d.check.note || ''; }
+  else {
+    const g = (d.journal && d.journal.grateful) || [];
+    ui.grats = [g[0]||'', g[1]||'', g[2]||''];
+    ui.celeb = (d.journal && d.journal.celebrate) || '';
   }
+  ui.step = step;
+  render();
+}
 
-  const counts = {}; THIEVES.forEach(x=>counts[x.id]=0);
+async function actReset(){
+  if (!confirm(t().reset_ask)) return;
+  S.days = {};
+  await save();
+  ui.view = 'flow';
+  route();
+  render();
+}
+
+function actExport(){
+  const keys = startedKeys();
+  const lines = [`# 5 Thieves — ${keys.length} days`, ''];
   keys.forEach(k=>{
-    const e = S.days[k].evening;
-    if (e && e.thief!=='none') counts[e.thief]++;
-  });
-  const max = Math.max(1, ...Object.values(counts));
-  const sorted = THIEVES.slice().sort((a,b)=>counts[b.id]-counts[a.id]);
-
-  const tally = el('<div class="tally"></div>');
-  sorted.forEach(th=>{
-    const size = 17 + (counts[th.id]/max) * 27;
-    tally.appendChild(el(
-      `<div class="bar"><span class="n">${counts[th.id]}</span>
-       <span class="w" style="font-size:${size}px">${th[S.lang].n}</span></div>`));
-  });
-  wrap.appendChild(tally);
-
-  const both = keys.filter(k=>S.days[k].morning && S.days[k].evening);
-  if (both.length){
-    const hit = both.filter(k=>S.days[k].morning.thief===S.days[k].evening.thief).length;
-    wrap.appendChild(el(
-      `<p class="section-label" style="text-transform:none;letter-spacing:.02em;font-family:var(--body);font-size:14.5px;color:var(--mute)">
-        ${t().r_acc(Math.round(hit/both.length*100))}</p>`));
-  }
-
-  wrap.appendChild(el(`<div class="section-label">${t().r_days}</div>`));
-  keys.slice().reverse().forEach(k=>{
     const d = S.days[k];
-    const m = d.morning ? name(d.morning.thief) : '—';
-    const e = d.evening ? (d.evening.thief==='none' ? t().act_none : name(d.evening.thief)) : '—';
-    const note = (d.evening && d.evening.note) || (d.morning && d.morning.note) || '';
-    const hit = d.morning && d.evening && d.morning.thief===d.evening.thief;
-    wrap.appendChild(el(`
-      <div class="row">
-        <span class="d">${k.slice(5).replace('-','.')}</span>
-        <span class="v">${m} → <strong${hit?' style="color:var(--accent)"':''}>${e}</strong>
-        ${note?`<small>${esc(note)}</small>`:''}</span>
-      </div>`));
-  });
-
-  const acts = el('<div class="actions"></div>');
-  const ex = el(`<button class="ghost">${t().exp_btn}</button>`);
-  ex.onclick = exportData;
-  const rs = el(`<button class="ghost danger">${t().reset}</button>`);
-  rs.onclick = async ()=>{
-    if (!confirm(t().reset_ask)) return;
-    S.days = {}; await save(); view='today'; render();
-  };
-  acts.append(ex, rs);
-  wrap.appendChild(acts);
-  return wrap;
-}
-
-function exportData(){
-  const lines = ['# 5 Thieves — ' + Object.keys(S.days).length + ' days',''];
-  Object.keys(S.days).sort().forEach(k=>{
-    const d = S.days[k];
-    lines.push(`## ${k}`);
-    if (d.morning) lines.push(`- ${t().exp} ${name(d.morning.thief)}${d.morning.note?' — '+d.morning.note:''}`);
-    if (d.evening) lines.push(`- ${t().act} ${d.evening.thief==='none'?t().act_none:name(d.evening.thief)}${d.evening.note?' — '+d.evening.note:''}`);
+    lines.push(`## ${k}${d.late ? ' (late)' : d.done ? '' : ' (open)'}`);
+    lines.push(`- Focus: ${name(d.focus)} — “${say(d.focus)}”`);
+    if (d.check) lines.push(`- Showed up: ${d.check.showed ? 'yes' : 'no'}${d.check.note ? ' — ' + d.check.note : ''}`);
+    if (d.journal){
+      d.journal.grateful.forEach(g=>lines.push(`- Grateful: ${g}`));
+      if (d.journal.celebrate) lines.push(`- Celebrate: ${d.journal.celebrate}`);
+    }
     lines.push('');
   });
   const blob = new Blob([lines.join('\n')], {type:'text/markdown'});
@@ -471,21 +470,303 @@ function exportData(){
   URL.revokeObjectURL(a.href);
 }
 
-/* ------------------------------------------------------------------ *
- * wiring
- * ------------------------------------------------------------------ */
-document.getElementById('de').onclick = async ()=>{ S.lang='de'; await save(); render(); };
-document.getElementById('en').onclick = async ()=>{ S.lang='en'; await save(); render(); };
-document.getElementById('navBtn').onclick = ()=>{ view = view==='today'?'review':'today'; render(); };
+/* ================================================================== *
+ *  6 · VIEW HELPERS
+ * ================================================================== */
+
+const $  = (id) => document.getElementById(id);
+const el = (h) => { const d = document.createElement('div'); d.innerHTML = h.trim(); return d.firstChild; };
+const esc = (s) => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function header(eyebrow, count, h1, lede){
+  return el(`
+    <div>
+      <div class="eyebrow">${eyebrow}</div>
+      ${count ? `<div class="daycount">${count}</div>` : ''}
+      <h1>${h1}</h1>
+      ${lede ? `<p class="lede">${lede}</p>` : ''}
+    </div>`);
+}
+
+function eyebrowFor(part){
+  return ui.catchup ? t().catchup(dateLabel(ui.key)) : part;
+}
+
+function dayLabel(){
+  const started = startedKeys().length;
+  const n = S.days[ui.key] && S.days[ui.key].focus ? dayNumber(ui.key) : started + 1;
+  return t().day(Math.min(n, 30));
+}
+
+/* ================================================================== *
+ *  7 · VIEWS
+ * ================================================================== */
+
+/* --- morning 1/2: recite the five ---------------------------------- */
+function ReciteView(){
+  const w = el('<section></section>');
+  w.appendChild(header(`${t().morning} · ${t().step(1,2)}`, dayLabel(), t().recite_h, t().recite_l));
+  const list = el('<div class="mantras"></div>');
+  THIEVES.forEach(th=>{
+    list.appendChild(el(`
+      <div class="mantra">
+        <div class="who">${th[S.lang].n}</div>
+        <div class="say">${th[S.lang].m}</div>
+      </div>`));
+  });
+  w.appendChild(list);
+  const btn = el(`<button class="save">${t().next}</button>`);
+  btn.onclick = actRecited;
+  w.appendChild(btn);
+  w.appendChild(el(`<p class="footnote">${t().priv}</p>`));
+  return w;
+}
+
+/* --- morning 2/2: choose the focus --------------------------------- */
+function FocusView(){
+  const w = el('<section></section>');
+  w.appendChild(header(`${t().morning} · ${t().step(2,2)}`, dayLabel(), t().focus_h, t().focus_l));
+  const list = el('<div class="thieves"></div>');
+  THIEVES.forEach(th=>{
+    const b = el(`
+      <button class="thief" aria-pressed="${ui.focusPick===th.id}">
+        <span class="glyph">${S.lang==='de' ? th.de.n[0] : '•'}</span>
+        <span>
+          <span class="name">${th[S.lang].n}</span>
+          <span class="desc">${th[S.lang].m}</span>
+        </span>
+      </button>`);
+    b.onclick = ()=>{ ui.focusPick = th.id; render(); };
+    list.appendChild(b);
+  });
+  w.appendChild(list);
+  const btn = el(`<button class="save" ${ui.focusPick?'':'disabled'}>${t().start}</button>`);
+  btn.onclick = actStart;
+  w.appendChild(btn);
+  return w;
+}
+
+/* --- during the day: did the thief show up? ------------------------ */
+function CheckView(){
+  const d = S.days[ui.key];
+  const w = el('<section></section>');
+  w.appendChild(header(eyebrowFor(t().daytime), dayLabel(),
+                       t().check_h(name(d.focus)),
+                       ui.catchup ? t().catchup_l : t().check_l));
+
+  w.appendChild(el(`
+    <div class="focus-card">
+      <div class="who">${t().todays} · ${name(d.focus)}</div>
+      <div class="say">${say(d.focus)}</div>
+    </div>`));
+
+  const yn = el(`
+    <div class="yn">
+      <button aria-pressed="${ui.showed===true}">${t().yes}</button>
+      <button aria-pressed="${ui.showed===false}">${t().no}</button>
+    </div>`);
+  const [yesB, noB] = yn.querySelectorAll('button');
+  yesB.onclick = ()=>{ ui.showed = ui.showed===true ? null : true; render(); };
+  noB.onclick  = ()=>{ ui.showed = ui.showed===false ? null : false; render(); };
+  w.appendChild(yn);
+
+  const field = el(`
+    <div class="field">
+      <label for="note">${t().check_note}</label>
+      <textarea id="note" rows="2" placeholder="${t().check_ph}"></textarea>
+    </div>`);
+  const ta = field.querySelector('textarea');
+  ta.value = ui.note;
+  ta.oninput = (e)=>{ ui.note = e.target.value; };
+  w.appendChild(field);
+
+  const btn = el(`<button class="save" ${ui.showed===null?'disabled':''}>${t().to_journal}</button>`);
+  btn.onclick = actCheck;
+  w.appendChild(btn);
+
+  if (!ui.catchup && !ui.editing) w.appendChild(el(`<p class="hint">${t().check_hint}</p>`));
+
+  if (!ui.catchup && !ui.editing){
+    const sw = el(`<div class="switch"><button class="linky">${t().change_focus}</button></div>`);
+    sw.querySelector('button').onclick = ()=>{ ui.step='focus'; ui.focusPick=d.focus; render(); };
+    w.appendChild(sw);
+  }
+  return w;
+}
+
+/* --- evening: the journal ------------------------------------------ */
+function JournalView(){
+  const w = el('<section></section>');
+  w.appendChild(header(eyebrowFor(t().evening), dayLabel(), t().j_h, t().j_l));
+
+  const gl = el(`<div><label>${t().g_label}</label></div>`);
+  for (let i=0;i<3;i++){
+    const row = el(`
+      <div class="grat">
+        <span class="n">${i+1}</span>
+        <input type="text" placeholder="${t().g_ph}">
+      </div>`);
+    const inp = row.querySelector('input');
+    inp.value = ui.grats[i];
+    inp.oninput = (e)=>{
+      ui.grats[i] = e.target.value;
+      $('finish').disabled = !ui.grats.some(g=>g.trim());
+    };
+    gl.appendChild(row);
+  }
+  w.appendChild(gl);
+
+  const cf = el(`
+    <div class="field">
+      <label for="celeb">${t().c_label}</label>
+      <textarea id="celeb" rows="2" placeholder="${t().c_ph}"></textarea>
+    </div>`);
+  const ta = cf.querySelector('textarea');
+  ta.value = ui.celeb;
+  ta.oninput = (e)=>{ ui.celeb = e.target.value; };
+  w.appendChild(cf);
+
+  const btn = el(`<button class="save" id="finish" ${ui.grats.some(g=>g.trim())?'':'disabled'}>${t().finish}</button>`);
+  btn.onclick = actFinish;
+  w.appendChild(btn);
+  return w;
+}
+
+/* --- the day is closed --------------------------------------------- */
+function DoneView(){
+  const d = S.days[ui.key];
+  const full = startedKeys().length >= 30;
+  const w = el('<section></section>');
+  w.appendChild(header(t().evening, dayLabel(), t().done_h));
+
+  const box = el('<div class="done"></div>');
+  box.appendChild(el(`
+    <div class="focus-card" style="margin-top:0">
+      <div class="who">${name(d.focus)} · ${d.check.showed ? t().showed : t().not_showed}</div>
+      <div class="say">${say(d.focus)}</div>
+    </div>`));
+  if (d.check.note) box.appendChild(el(`<div class="quote">${esc(d.check.note)}</div>`));
+
+  const gl = el(`<ul class="gratlist" style="margin-top:20px"></ul>`);
+  d.journal.grateful.forEach((g,i)=>gl.appendChild(el(
+    `<li><span class="n">${i+1}</span><span>${esc(g)}</span></li>`)));
+  box.appendChild(gl);
+  if (d.journal.celebrate) box.appendChild(el(
+    `<div class="quote">${t().celebrated}: ${esc(d.journal.celebrate)}</div>`));
+
+  box.appendChild(el(`<p style="margin-top:22px">${full ? t().thirty : t().tomorrow}</p>`));
+  w.appendChild(box);
+
+  const acts = el('<div class="actions"></div>');
+  const e1 = el(`<button class="ghost">${t().edit_check}</button>`);
+  e1.onclick = ()=>actEdit('check');
+  const e2 = el(`<button class="ghost">${t().edit_journal}</button>`);
+  e2.onclick = ()=>actEdit('journal');
+  acts.append(e1, e2);
+  w.appendChild(acts);
+  return w;
+}
+
+/* --- review -------------------------------------------------------- */
+function ReviewView(){
+  const w = el('<section></section>');
+  const keys = startedKeys();
+
+  w.appendChild(header(t().nav_log, '', t().r_h, keys.length ? t().r_l(keys.length) : ''));
+
+  if (!keys.length){
+    w.appendChild(el(`<p class="empty">${t().r_empty}</p>`));
+    return w;
+  }
+
+  const stats = {};
+  THIEVES.forEach(x=>stats[x.id] = {focused:0, showed:0});
+  keys.forEach(k=>{
+    const d = S.days[k];
+    stats[d.focus].focused++;
+    if (d.check && d.check.showed) stats[d.focus].showed++;
+  });
+  const max = Math.max(1, ...THIEVES.map(x=>stats[x.id].showed));
+  const sorted = THIEVES.slice().sort((a,b)=>stats[b.id].showed - stats[a.id].showed);
+
+  const tally = el('<div class="tally"></div>');
+  sorted.forEach(th=>{
+    const s = stats[th.id];
+    const size = 17 + (s.showed/max) * 27;
+    tally.appendChild(el(`
+      <div class="bar">
+        <span class="n">${s.showed}/${s.focused}</span>
+        <span class="w" style="font-size:${size}px">${th[S.lang].n}</span>
+      </div>`));
+  });
+  w.appendChild(tally);
+
+  const answered = keys.filter(k=>S.days[k].check);
+  if (answered.length){
+    const came = answered.filter(k=>S.days[k].check.showed).length;
+    w.appendChild(el(`<p class="stat">${t().r_stat(came, answered.length)}</p>`));
+  }
+
+  w.appendChild(el(`<div class="section-label">${t().r_days}</div>`));
+  keys.slice().reverse().forEach(k=>{
+    const d = S.days[k];
+    const status = d.check ? (d.check.showed ? '✓' : t().none_mark) : '';
+    const tag = !d.done ? ` <span class="tag">${t().open_tag}</span>`
+              : d.late  ? ` <span class="tag">${t().late_tag}</span>` : '';
+    const note = (d.journal && d.journal.celebrate) || (d.check && d.check.note)
+              || (d.journal && d.journal.grateful[0]) || '';
+    w.appendChild(el(`
+      <div class="row">
+        <span class="d">${dateLabel(k)}</span>
+        <span class="v"><strong>${name(d.focus)}</strong> ${status}${tag}
+        ${note ? `<small>${esc(note)}</small>` : ''}</span>
+      </div>`));
+  });
+
+  const acts = el('<div class="actions"></div>');
+  const ex = el(`<button class="ghost">${t().exp_btn}</button>`);
+  ex.onclick = actExport;
+  const rs = el(`<button class="ghost danger">${t().reset}</button>`);
+  rs.onclick = actReset;
+  acts.append(ex, rs);
+  w.appendChild(acts);
+  return w;
+}
+
+/* ================================================================== *
+ *  8 · RENDER
+ * ================================================================== */
+
+const VIEWS = { recite:ReciteView, focus:FocusView, check:CheckView, journal:JournalView, done:DoneView };
+
+function render(){
+  document.documentElement.lang = S.lang;
+  const dusk = ui.view==='flow' && (ui.step==='journal' || ui.step==='done');
+  document.body.classList.toggle('dusk', dusk);
+  document.querySelector('meta[name=theme-color]')
+    .setAttribute('content', dusk ? '#131A1E' : '#D9E0E3');
+
+  $('mark').innerHTML = S.lang==='de' ? '<span>K</span>EBAB' : '5 THIEVE<span>S</span>';
+  $('de').setAttribute('aria-pressed', S.lang==='de');
+  $('en').setAttribute('aria-pressed', S.lang==='en');
+  $('navBtn').textContent = ui.view==='flow' ? t().nav_log : t().nav_back;
+
+  $('view').innerHTML = '';
+  $('view').appendChild(ui.view==='review' ? ReviewView() : VIEWS[ui.step]());
+}
+
+/* ================================================================== *
+ *  9 · WIRING
+ * ================================================================== */
+
+$('de').onclick = async ()=>{ S.lang='de'; await save(); render(); };
+$('en').onclick = async ()=>{ S.lang='en'; await save(); render(); };
+$('navBtn').onclick = ()=>{ ui.view = ui.view==='flow' ? 'review' : 'flow'; render(); };
 
 (async function init(){
   const raw = await store.get();
   if (raw){ try { S = Object.assign(S, JSON.parse(raw)); } catch(e){} }
-  session = defaultSession();
-  const d = S.days[todayKey()];
-  if (d && d[session] === undefined && d[session==='morning'?'evening':'morning']) {
-    // keep the session that is actually due
-  }
+  route();
   render();
 })();
 </script>
