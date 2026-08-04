@@ -168,29 +168,39 @@
 
 const THIEVES = [
   { id:'control',
-    de:{ n:'Kontrolle',      m:'Ich lasse los, was ich nicht in der Hand habe.',
-         d:'Der Glaube, Ergebnisse und Menschen steuern zu können.' },
-    en:{ n:'Control',        m:'I let go of what is not mine to control.',
+    de:{ n:'Kontrolle',      a:'die',
+         m:'Ich entscheide mich für diesen Augenblick und nehme an, was ist. Das Glück liegt nicht in dem Ergebnis, das ich suche.',
+         d:'Der Glaube, Menschen und den Lauf der Dinge lenken zu können.' },
+    en:{ n:'Control',
+         m:'I choose to be in the present moment and to embrace whatever is. Happiness is not in the outcome I seek.',
          d:'The belief that outcomes and people can be steered.' } },
   { id:'conceit',
-    de:{ n:'Eitelkeit',      m:'Ich bin Teil von etwas Größerem.',
-         d:'Das Ego, das sich für getrennt und wichtig hält.' },
-    en:{ n:'Conceit',        m:'I am part of something larger than me.',
+    de:{ n:'Eitelkeit',      a:'die',
+         m:'Ich bin mit allem verbunden, was ist. Wenn ich zum Wohl des Ganzen beitrage, findet das Glück mich von selbst.',
+         d:'Das Ego, das sich abgrenzt und zu wichtig nimmt.' },
+    en:{ n:'Conceit',
+         m:'I am connected to all that is, and if I can contribute to the good of the whole, happiness will find me.',
          d:'The ego that holds itself separate and important.' } },
   { id:'coveting',
-    de:{ n:'Begehren',       m:'Was ich habe, ist genug.',
-         d:'Immer das Nächste wollen, oder das, was andere haben.' },
-    en:{ n:'Coveting',       m:'What is here is enough.',
+    de:{ n:'Begehren',       a:'das',
+         m:'Das Leben ist kein Wettbewerb. Ich bin dankbar für das, was ich habe, und für den, der ich bin. Ich freue mich über den Erfolg anderer – wer sich für andere freut, ist glücklich.',
+         d:'Immer das Nächste wollen – oder das, was andere haben.' },
+    en:{ n:'Coveting',
+         m:'Life is not a contest. I will be grateful for what I have and who I am. I will celebrate the success of others, for when I celebrate for others, I am happy.',
          d:'Always wanting the next thing, or what others have.' } },
   { id:'consumption',
-    de:{ n:'Anhäufung',      m:'Glück kommt von innen, nicht von mehr.',
-         d:'Mehr Dinge, mehr Erfolge, mehr Erlebnisse — nie genug.' },
-    en:{ n:'Consumption',    m:'Happiness comes from within, not from more.',
+    de:{ n:'Anhäufung',      a:'die',
+         m:'Ich kann mich jetzt für Glück und Zufriedenheit entscheiden. Beides entsteht in meinem Kopf, nicht aus dem, was gerade passiert. Jetzt wähle ich das Glück.',
+         d:'Mehr Dinge, mehr Erfolge, mehr Erlebnisse – nie genug.' },
+    en:{ n:'Consumption',
+         m:'I can choose happiness and contentment right now. It is a product of my mind, not a result of what is happening. Right now I will choose happiness.',
          d:'More things, more wins, more experiences — never enough.' } },
   { id:'comfort',
-    de:{ n:'Bequemlichkeit', m:'Ich wachse am Unbequemen.',
-         d:'Ausweichen vor Risiko und Unbehagen.' },
-    en:{ n:'Comfort',        m:'I grow where it is uncomfortable.',
+    de:{ n:'Bequemlichkeit', a:'die',
+         m:'Ich bin nicht meine Muster. Nur weil etwas meine gewohnte Spur ist, heißt das nicht, dass sie mir guttut. Ich kann einen neuen Weg wählen.',
+         d:'Risiko und Unbehagen aus dem Weg gehen.' },
+    en:{ n:'Comfort',
+         m:'I am not my patterns. Just because this is my habitual channel, it doesn’t mean it serves me. I can choose a new path.',
          d:'Avoiding risk and discomfort.' } }
 ];
 
@@ -201,36 +211,36 @@ const I18N = {
     step:(a,b)=>`Schritt ${a} von ${b}`,
     day:(n)=>`Tag ${n} von 30`,
     catchup:(d)=>`Nachtrag · ${d}`,
-    catchup_l:'Gestern blieb offen. Schließ es in Ruhe ab — danach beginnt der heutige Tag.',
+    catchup_l:'Gestern ist offen geblieben. Schließ den Tag in Ruhe ab – danach beginnt heute.',
     recite_h:'Die fünf Sätze',
-    recite_l:'Sprich jeden einmal, laut oder leise, und lass ihn einen Atemzug lang stehen.',
+    recite_l:'Sprich jeden einmal, laut oder leise, und lass ihn einen Atemzug lang nachklingen.',
     next:'Weiter',
     focus_h:'Welcher Satz begleitet dich heute?',
-    focus_l:'Einer genügt. Vorgeschlagen ist der nächste der Reihe — du darfst abweichen.',
+    focus_l:'Einer genügt. Vorgeschlagen ist der nächste in der Reihe – du kannst auch einen anderen nehmen.',
     start:'Tag beginnen',
     todays:'Dein Satz für heute',
-    check_h:(n)=>`Ist ${n} aufgetaucht?`,
+    check_h:(n)=>`Ist ${n} heute aufgetaucht?`,
     check_l:'Nicht bewerten, nur bemerken.',
-    check_hint:'Beantworte das am besten erst am Ende des Tages — einmal genügt.',
-    check_note:'Was ist passiert?', check_ph:'Kurz genügt …',
+    check_hint:'Am besten erst am Ende des Tages beantworten – einmal genügt.',
+    check_note:'Was ist passiert?', check_ph:'Ein paar Worte genügen …',
     yes:'Ja', no:'Nein',
     to_journal:'Weiter zum Journal',
     change_focus:'Fokus ändern',
     j_h:'Der Tag klingt aus',
-    j_l:'Drei Dinge, für die du heute dankbar bist — und ein Mensch, den du feiern willst.',
+    j_l:'Drei Dinge, für die du heute dankbar bist – und ein Mensch, den du feiern willst.',
     g_label:'Dankbar für', g_ph:'…',
-    c_label:'Jemanden feiern', c_ph:'Wer — und wofür?',
+    c_label:'Jemanden feiern', c_ph:'Wer – und wofür?',
     finish:'Tag abschließen',
     done_h:'Der Tag ist abgeschlossen.',
     showed:'Aufgetaucht', not_showed:'Nicht aufgetaucht',
     celebrated:'Gefeiert',
     edit_check:'Antwort ändern', edit_journal:'Journal ändern',
-    tomorrow:'Morgen beginnt es von vorn — fünf Sätze, ein Fokus.',
-    thirty:'30 Tage sind voll. Du brauchst das hier jetzt nicht mehr — der Wächter ist wach. Schau in den Rückblick und lass die App los.',
+    tomorrow:'Morgen fängt es von vorn an – fünf Sätze, ein Fokus.',
+    thirty:'Die 30 Tage sind voll. Du brauchst das hier nicht mehr – der Wissende in dir ist wach. Sieh dir den Rückblick an und lass die App los.',
     r_h:'Was dich bestohlen hat',
-    r_l:(n)=>`${n} ${n===1?'Tag':'Tage'} begonnen. Die Zahl: aufgetaucht / im Fokus.`,
+    r_l:(n)=>`${n===1?'Ein Tag':`${n} Tage`} begonnen. Die Zahlen: aufgetaucht / im Fokus.`,
     r_empty:'Noch nichts festgehalten. Beginne einen Morgen, dann erscheint hier dein Muster.',
-    r_stat:(a,b)=>`An ${a} von ${b} beantworteten Tagen ist der Dieb trotz Fokus gekommen.`,
+    r_stat:(a,b)=>`An ${a} von ${b} beantworteten Tagen kam der Dieb trotz Fokus.`,
     r_days:'Die einzelnen Tage',
     open_tag:'offen', late_tag:'nachgetragen', none_mark:'—',
     exp_btn:'Daten exportieren', reset:'Alles löschen',
@@ -329,6 +339,8 @@ const t    = () => I18N[S.lang];
 const T5   = (id) => THIEVES.find(x=>x.id===id);
 const name = (id) => T5(id)[S.lang].n;
 const say  = (id) => T5(id)[S.lang].m;
+/* German needs the article to read as a sentence: "Ist die Kontrolle …" */
+const artName = (id) => { const x = T5(id)[S.lang]; return x.a ? `${x.a} ${x.n}` : x.n; };
 
 const fmtKey = (d) =>
   `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -535,7 +547,7 @@ function FocusView(){
         <span class="glyph">${S.lang==='de' ? th.de.n[0] : '•'}</span>
         <span>
           <span class="name">${th[S.lang].n}</span>
-          <span class="desc">${th[S.lang].m}</span>
+          <span class="desc">${th[S.lang].d}</span>
         </span>
       </button>`);
     b.onclick = ()=>{ ui.focusPick = th.id; render(); };
@@ -553,7 +565,7 @@ function CheckView(){
   const d = S.days[ui.key];
   const w = el('<section></section>');
   w.appendChild(header(eyebrowFor(t().daytime), dayLabel(),
-                       t().check_h(name(d.focus)),
+                       t().check_h(artName(d.focus)),
                        ui.catchup ? t().catchup_l : t().check_l));
 
   w.appendChild(el(`
