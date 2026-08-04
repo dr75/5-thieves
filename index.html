@@ -72,6 +72,11 @@
   .intro-page{min-height:100%;scroll-snap-align:start;scroll-snap-stop:always;
               display:flex;flex-direction:column;justify-content:center;padding:6px 0}
   .intro-end{min-height:100%;scroll-snap-align:start}   /* swipe into this and the day begins */
+  /* cover: title in the middle, the book it comes from at the foot */
+  .intro-page.cover{justify-content:flex-start}
+  .cover-mid{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0}
+  .cover-foot{flex:none;max-width:30ch;margin:0 auto;width:100%}
+  .cover-foot .book{margin:0}
   .intro .dots{margin:0 0 8px;flex:none}
   .intro .prose p{margin:0 auto;max-width:none;font-family:var(--display);font-weight:600;
                   font-size:clamp(26px,7.6vw,34px);line-height:1.2;letter-spacing:-.024em}
@@ -294,7 +299,7 @@ const I18N = {
     i_url:'https://amzn.eu/d/0gEEW3as',
     i_start:'Los geht’s',
     intro:[
-      { title:'Die fünf Diebe des Glücks' },
+      { title:'Die fünf Diebe des Glücks', book:true },
       { p:'John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen. Er nennt sie die fünf Diebe des Glücks.' },
       { names:true },
       { p:'Du übst hier eine Gewohnheit ein: die fünf Diebe zu erkennen, während sie am Werk sind.' },
@@ -356,7 +361,7 @@ const I18N = {
     i_url:'https://amzn.eu/d/0eAXp9t8',
     i_start:'Start',
     intro:[
-      { title:'The Five Thieves of Happiness' },
+      { title:'The Five Thieves of Happiness', book:true },
       { p:'John Izzo describes five habits of mind that steal our happiness. He calls them the five thieves of happiness.' },
       { names:true },
       { p:'What you practise here is a habit: recognising the five thieves while they are at work.' },
@@ -625,10 +630,21 @@ function IntroView(){
   const w = el('<section class="intro"></section>');
   const scroller = el('<div class="intro-scroll"></div>');
 
+  const bookP = ()=> el(
+    `<p class="book">${t().i_book}<br><a href="${t().i_url}" target="_blank" rel="noopener noreferrer">${t().i_book_t}</a></p>`);
+
   steps.forEach(st=>{
     const pg = el('<div class="intro-page"></div>');
     if (st.title){
-      pg.appendChild(el(`<h1 class="title">${st.title}</h1>`));
+      pg.classList.add('cover');
+      const mid = el('<div class="cover-mid"></div>');
+      mid.appendChild(el(`<h1 class="title">${st.title}</h1>`));
+      pg.appendChild(mid);
+      if (st.book){
+        const foot = el('<div class="prose cover-foot"></div>');
+        foot.appendChild(bookP());
+        pg.appendChild(foot);
+      }
     } else {
       const p = el('<div class="prose"></div>');
       if (st.p) p.appendChild(el(`<p>${st.p}</p>`));
@@ -639,8 +655,7 @@ function IntroView(){
         p.appendChild(names);
         p.appendChild(el(`<p class="note">${t().i_kebab}</p>`));
       }
-      if (st.book) p.appendChild(el(
-        `<p class="book">${t().i_book}<br><a href="${t().i_url}" target="_blank" rel="noopener noreferrer">${t().i_book_t}</a></p>`));
+      if (st.book) p.appendChild(bookP());
       pg.appendChild(p);
     }
     scroller.appendChild(pg);
