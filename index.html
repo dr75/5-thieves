@@ -75,10 +75,8 @@
   .intro .dots{margin:0 0 8px;flex:none}
   .intro .prose p{margin:0 auto;max-width:none;font-family:var(--display);font-weight:600;
                   font-size:clamp(26px,7.6vw,34px);line-height:1.2;letter-spacing:-.024em}
-  /* the page that also lists the five needs a smaller statement */
-  .intro-page.has-names .prose p{font-size:clamp(21px,5.6vw,25px);line-height:1.26}
-  .intro .prose .note{font-family:var(--body);font-weight:400;font-size:14px;
-                      letter-spacing:0;line-height:1.5;margin-top:16px}
+  .intro .prose .note{font-family:var(--body);font-weight:400;font-size:16px;
+                      letter-spacing:0;line-height:1.5;margin-top:20px}
   .intro .prose .book{font-family:var(--mono);font-weight:400;font-size:13px;letter-spacing:0;line-height:1.6}
   .intro .names{max-width:224px;margin-left:auto;margin-right:auto;text-align:left}
   .intro .lede,.intro h1{max-width:none}
@@ -109,10 +107,10 @@
                font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--mute)}
   .prose .book a{color:var(--accent);text-underline-offset:3px}
 
-  .names{margin:22px 0 0;border-top:1px solid var(--line)}
-  .names div{display:flex;gap:13px;align-items:baseline;padding:9px 4px;border-bottom:1px solid var(--line)}
-  .names .g{font-family:var(--display);font-weight:800;font-size:17px;color:var(--accent);width:15px;flex:none}
-  .names .n{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:-.01em}
+  .names{margin:0;border-top:1px solid var(--line)}
+  .names div{display:flex;gap:16px;align-items:baseline;padding:13px 4px;border-bottom:1px solid var(--line)}
+  .names .g{font-family:var(--display);font-weight:800;font-size:21px;color:var(--accent);width:19px;flex:none}
+  .names .n{font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:-.015em}
 
   /* ---- headers ---- */
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
@@ -297,7 +295,8 @@ const I18N = {
     i_start:'Los geht’s',
     intro:[
       { title:'Die fünf Diebe des Glücks' },
-      { p:'John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen. Er nennt sie die fünf Diebe des Glücks.', names:true },
+      { p:'John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen. Er nennt sie die fünf Diebe des Glücks.' },
+      { names:true },
       { p:'Du übst hier eine Gewohnheit ein: die fünf Diebe zu erkennen, während sie am Werk sind.' },
       { p:'Je öfter du sie erwischst, desto weniger Macht haben sie – mit der Zeit tauchen sie seltener auf und nehmen dir weniger weg.' },
       { p:'Dafür sind die Mantras da: Jedes stellt seinem Dieb etwas entgegen.' },
@@ -305,7 +304,7 @@ const I18N = {
       { p:'Tagsüber merkst du, wenn dieser Dieb auftaucht – und sprichst sein Mantra noch einmal.' },
       { p:'Abends notierst du drei Dinge, für die du dankbar bist, und einen Menschen, dem du Gutes wünschst.' },
       { p:'Nach 30 Tagen sind die Diebe noch nicht weg – aber es fällt dir deutlich einfacher, sie zu erkennen.' },
-      { p:'Die Idee der fünf Diebe stammt von John Izzo. Lies sein Buch – diese App ersetzt es nicht, sie macht aus der Übung darin eine tägliche Gewohnheit.', book:true },
+      { p:'Die Idee der fünf Diebe stammt von John Izzo. Lies sein Buch – diese App ersetzt es nicht, sie hilft dir, täglich zu üben.', book:true },
       { p:'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.' }
     ],
     morning:'Morgens', daytime:'Tagsüber', evening:'Abends',
@@ -358,7 +357,8 @@ const I18N = {
     i_start:'Start',
     intro:[
       { title:'The Five Thieves of Happiness' },
-      { p:'John Izzo describes five habits of mind that steal our happiness. He calls them the five thieves of happiness.', names:true },
+      { p:'John Izzo describes five habits of mind that steal our happiness. He calls them the five thieves of happiness.' },
+      { names:true },
       { p:'What you practise here is a habit: recognising the five thieves while they are at work.' },
       { p:'The more often you catch them, the less power they have — over time they show up less often and take less from you.' },
       { p:'That is what the mantras are for: each one answers its thief.' },
@@ -366,7 +366,7 @@ const I18N = {
       { p:'During the day, when that thief shows up you notice it and say its mantra again.' },
       { p:'In the evening you note three things you are grateful for and one person you want to celebrate.' },
       { p:'After thirty days the thieves are not gone — but you spot them far more easily.' },
-      { p:'The idea of the five thieves is John Izzo’s. Read his book — this app doesn’t replace it, it turns the exercise in it into a daily habit.', book:true },
+      { p:'The idea of the five thieves is John Izzo’s. Read his book — this app doesn’t replace it, it helps you practise daily.', book:true },
       { p:'Everything stays on this device. No account, no server.' }
     ],
     morning:'Morning', daytime:'During the day', evening:'Evening',
@@ -626,7 +626,7 @@ function IntroView(){
   const scroller = el('<div class="intro-scroll"></div>');
 
   steps.forEach(st=>{
-    const pg = el(`<div class="intro-page${st.names ? ' has-names' : ''}"></div>`);
+    const pg = el('<div class="intro-page"></div>');
     if (st.title){
       pg.appendChild(el(`<h1 class="title">${st.title}</h1>`));
     } else {
