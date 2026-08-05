@@ -83,7 +83,7 @@
   .intro .prose .note{font-family:var(--body);font-weight:400;font-size:16px;
                       letter-spacing:0;line-height:1.5;margin-top:20px}
   .intro .prose .book{font-family:var(--mono);font-weight:400;font-size:13px;letter-spacing:0;line-height:1.6}
-  .intro .names{max-width:224px;margin-left:auto;margin-right:auto;text-align:left}
+  .intro .names{max-width:262px;margin-left:auto;margin-right:auto}
   .intro .lede,.intro h1{max-width:none}
   .intro h1.title{font-size:clamp(34px,9.8vw,46px);line-height:1.06;letter-spacing:-.032em;
                   margin:0 auto;max-width:11ch}
@@ -112,10 +112,17 @@
                font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--mute)}
   .prose .book a{color:var(--accent);text-underline-offset:3px}
 
+  /* the five names, centred, each one a way into its thief */
   .names{margin:0;border-top:1px solid var(--line)}
-  .names div{display:flex;gap:16px;align-items:baseline;padding:13px 4px;border-bottom:1px solid var(--line)}
-  .names .g{font-family:var(--display);font-weight:800;font-size:21px;color:var(--accent);width:19px;flex:none}
-  .names .n{font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:-.015em}
+  /* a grid, so the name sits on the centre line and the chevron hangs off it */
+  .names .nrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;width:100%;
+               background:none;border:0;border-bottom:1px solid var(--line);padding:13px 4px;
+               color:var(--ink);font:inherit;cursor:pointer;transition:color .18s ease}
+  .names .nrow:hover{color:var(--accent)}
+  .names .n{grid-column:2;font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:-.015em}
+  .names .go{grid-column:3;justify-self:start;padding-left:9px;
+             font-family:var(--body);font-size:17px;color:var(--mute);opacity:.55;transition:opacity .18s ease}
+  .names .nrow:hover .go{color:var(--accent);opacity:1}
 
   /* ---- headers ---- */
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
@@ -137,6 +144,22 @@
   .focus-card{background:var(--fill);border:1px solid var(--line);border-left-width:2px;border-left-color:var(--accent);border-radius:4px;padding:15px 16px 17px;margin:2px 0 18px}
   .focus-card .who{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
   .focus-card .say{font-family:var(--display);font-weight:600;font-size:17px;line-height:1.4;letter-spacing:-.005em;margin-top:5px;color:var(--accent)}
+  /* the card is a door: tap it and the thief explains itself */
+  button.focus-card{display:block;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;
+                    transition:border-color .18s ease,background-color .18s ease}
+  button.focus-card:hover{border-color:var(--mute);border-left-color:var(--accent)}
+  .focus-card .more{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--mute);margin-top:11px}
+
+  /* ---- one thief, in detail ---- */
+  .tview .mantra{margin:4px 0 6px}
+  .tsec{margin-top:26px}
+  .tsec h2{font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.14em;
+           text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+  .tsec p{font-size:15.5px;line-height:1.6}
+  .tlist{list-style:none}
+  .tlist li{display:flex;gap:11px;font-size:15px;line-height:1.5;padding:8px 0;border-bottom:1px solid var(--line)}
+  .tlist li::before{content:'·';font-family:var(--display);font-weight:800;color:var(--accent);flex:none;line-height:1.2}
+  .tview .prose{margin-top:24px}
 
   /* ---- selectable list (focus step) ---- */
   .thieves{display:flex;flex-direction:column;border-top:1px solid var(--line)}
@@ -289,6 +312,127 @@ const THIEVES = [
          d:'Avoiding risk and discomfort.' } }
 ];
 
+/* Each thief in longer form, following Izzo's chapters: how it takes,
+   how you catch it at work, and what answers it. The mantras above are
+   his; this is the practice around them, shortened for one screen. */
+const DETAIL = {
+  control:{
+    de:{ steals:'Der Dieb der Kontrolle flüstert, dass du das Leben in der Hand haben musst – die Ergebnisse, die anderen Menschen, den Verlauf des Tages. Izzo trennt Einfluss von Kontrolle: Einfluss hast du fast immer, Kontrolle nie. Wer am Ergebnis festhält, kämpft gegen das, was ohnehin schon ist. In diesem Kampf geht das Glück verloren, nicht im Ergebnis selbst.',
+         signs:['Du sorgst dich um etwas, das noch gar nicht passiert ist.',
+                'Du willst einen anderen Menschen ändern – seine Meinung, seine Art, seine Entscheidung.',
+                'Du musst recht behalten, auch wenn es längst nichts mehr bringt.',
+                'Du planst weiter und weiter, weil Planen sich wie Sicherheit anfühlt.',
+                'Etwas läuft anders als gedacht, und das Erste, was kommt, ist Ärger.'],
+         helps:['Frag dich: Liegt das wirklich bei mir? Wenn nein, ist Loslassen keine Aufgabe, sondern eine Entscheidung.',
+                'Tu dein Bestes und gib den Ausgang frei. Die Anstrengung gehört dir, das Ergebnis nicht.',
+                'Sag erst Ja zu dem, was schon da ist – danach überlegst du, was du ändern willst.',
+                'Schau auf deine Reaktion statt auf das Ereignis. Dort liegt der Teil, der dir wirklich gehört.'],
+         close:'Wenn du diesen Dieb erkennst, hörst du auf, mit der Wirklichkeit zu verhandeln – und der Tag wird leichter.' },
+    en:{ steals:'The thief of control whispers that you must have life in hand — the outcomes, the other people, the shape of the day. Izzo separates influence from control: influence you almost always have, control you never do. Hold on to the outcome and you end up arguing with what already is. Happiness is lost in that argument, not in the outcome.',
+         signs:['You worry about something that hasn’t happened.',
+                'You want to change another person — their view, their manner, their decision.',
+                'You need to be right, long after it stops helping.',
+                'You keep planning, because planning feels like safety.',
+                'Something goes differently than expected and the first thing that arrives is irritation.'],
+         helps:['Ask: is this actually mine? If not, letting go is a decision, not a chore.',
+                'Do your best and release the outcome. The effort is yours; the result never was.',
+                'Say yes to what is already here first — then decide what you want to change.',
+                'Watch your response instead of the event. That is the part that belongs to you.'],
+         close:'Catch this thief and you stop negotiating with reality — the day gets lighter.' } },
+  conceit:{
+    de:{ steals:'Der Hochmut ist das Ego: der Teil von dir, der sich für getrennt hält – über den einen, unter den anderen, auf jeden Fall für sich. Er macht jede Begegnung zu einer Frage über dich: Wie stehe ich da? Werde ich gesehen? Izzo sagt, Glück kommt, wenn wir zum Ganzen beitragen. Der Hochmut kappt genau diese Verbindung – auch dann, wenn er sich klein macht, denn Selbstabwertung ist dasselbe Ego mit umgekehrtem Vorzeichen.',
+         signs:['Du nimmst etwas persönlich, das gar nicht über dich war.',
+                'Im Gespräch wartest du darauf, wieder dran zu sein, statt zuzuhören.',
+                'Kritik hörst du nicht zu Ende – du verteidigst dich schon.',
+                'Du misst in Titeln, Zahlen, Status – deinen oder denen der anderen.',
+                'Du willst Anerkennung für etwas, das du gern gegeben hast.'],
+         helps:['Tu etwas Gutes, ohne dass jemand davon erfährt.',
+                'Frag: Was braucht diese Situation? Nicht: Was springt für mich heraus?',
+                'Lass eine Kritik einmal ganz zu Ende gehen, bevor du antwortest.',
+                'Such zuerst, was dich mit dem Menschen vor dir verbindet, und erst dann den Unterschied.'],
+         close:'Wenn der Hochmut zurücktritt, wird der Raum größer: Es geht nicht mehr um dich – und genau das ist die Erleichterung.' },
+    en:{ steals:'Conceit is the ego: the part of you that holds itself separate — above some, below others, in any case apart. It turns every encounter into a question about you: How did I come across? Was I seen? Izzo’s answer is that happiness arrives when we contribute to the whole. Conceit cuts exactly that connection — including when it makes you small, because self-deprecation is the same ego with the sign reversed.',
+         signs:['You take something personally that was never about you.',
+                'In a conversation you wait for your turn instead of listening.',
+                'You start defending before the criticism is finished.',
+                'You measure in titles, numbers, status — yours or theirs.',
+                'You want credit for something you were glad to give.'],
+         helps:['Do something good that no one finds out about.',
+                'Ask what the situation needs, not what you get out of it.',
+                'Let one criticism finish completely before you answer.',
+                'Look for what connects you to the person in front of you before you look for the difference.'],
+         close:'When conceit steps back the room gets bigger: it is no longer about you, and that is the relief.' } },
+  coveting:{
+    de:{ steals:'Das Begehren macht aus dem Leben einen Wettbewerb. Es zeigt dir, was andere haben, und rechnet dir vor, was dir fehlt – meist gegen ein sorgfältig ausgesuchtes Bild ihres Lebens. Izzo sagt: Der Neid stiehlt nicht das, was du nicht hast, sondern das Gute an dem, was du hast. Und er nimmt dir die Freude über andere, die selbst eine Quelle von Glück wäre.',
+         signs:['Der Erfolg eines anderen fühlt sich an wie dein Verlust.',
+                'Nach zehn Minuten in einem Feed bist du kleiner als vorher.',
+                '„Ich wäre glücklich, wenn ich … hätte.“',
+                'Ein Rückschlag bei jemandem, den du beneidest, tut dir insgeheim gut.',
+                'Du erzählst von deinem Leben so, dass es im Vergleich besteht.'],
+         helps:['Gratuliere laut und ernst gemeint. Freude für andere ist eine Übung, keine Begabung.',
+                'Wenn Neid kommt: wünsche dem Menschen still etwas Gutes. Der Neid hält das nicht aus.',
+                'Zähl auf, was du hast und wer du bist, bevor du zählst, was fehlt.',
+                'Erinnere dich, womit du dich vergleichst: mit der besten Stunde eines fremden Tages.'],
+         close:'Wer sich über andere freuen kann, hat eine Quelle mehr – und dafür muss gar nichts eintreten.' },
+    en:{ steals:'Coveting turns life into a contest. It shows you what others have and totals up what you lack — usually against a carefully chosen picture of their life. Izzo puts it this way: envy doesn’t steal what you don’t have, it steals the good in what you do have. And it takes away joy for others, which would itself be a source of happiness.',
+         signs:['Someone else’s success feels like your loss.',
+                'Ten minutes in a feed and you are smaller than before.',
+                '“I’d be happy if I had …”',
+                'A setback for someone you envy secretly does you good.',
+                'You tell the story of your life so that it holds up in comparison.'],
+         helps:['Congratulate people out loud and mean it. Joy for others is a practice, not a talent.',
+                'When envy arrives, silently wish that person well. Envy cannot survive it.',
+                'Count what you have and who you are before you count what is missing.',
+                'Remember what you are comparing yourself with: the best hour of a stranger’s day.'],
+         close:'Being able to celebrate others is one more source of happiness — and nothing has to happen for it.' } },
+  consumption:{
+    de:{ steals:'Der Konsum verspricht, dass Glück eine Lieferung ist: das nächste Ding, der nächste Erfolg, das nächste Erlebnis. Er hält Wort – für ein paar Tage. Dann ist der Zustand wieder der alte, und der Dieb zeigt auf das Nächste. Izzo nennt den Satz dahinter: „Wenn ich erst …, dann bin ich glücklich.“ Solange dieser Satz läuft, ist das Glück immer woanders, nie hier.',
+         signs:['„Wenn ich erst … habe, dann …“ – der Satz taucht mehrmals am Tag auf.',
+                'Die Freude über etwas Gekauftes ist nach wenigen Tagen weg.',
+                'Leere, Unruhe oder Langeweile füllst du mit Kaufen, Essen, Scrollen.',
+                'Kaum ist ein Ziel erreicht, steht das nächste da – die Pause dazwischen fehlt.',
+                'Du sammelst auch Erlebnisse, als wären es Dinge.'],
+         helps:['Erwisch den Wenn-dann-Satz und beende ihn anders: Ich kann jetzt zufrieden sein.',
+                'Warte zwei Tage, bevor du kaufst. Das Wollen vergeht meistens von selbst.',
+                'Benutze und betrachte, was du schon hast. Genug entsteht durch Aufmerksamkeit, nicht durch Verzicht.',
+                'Beantworte einmal ernsthaft: Wie sähe genug aus?'],
+         close:'Zufriedenheit ist kein Ergebnis, sondern eine Entscheidung – du kannst sie jetzt treffen und morgen wieder.' },
+    en:{ steals:'Consumption promises that happiness is a delivery: the next thing, the next win, the next experience. It keeps its promise — for a few days. Then you are back where you were and the thief points at the next thing. Izzo names the sentence behind it: “When I finally have …, then I’ll be happy.” While that sentence is running, happiness is always somewhere else, never here.',
+         signs:['“When I finally have …, then …” — the sentence shows up several times a day.',
+                'The pleasure of something bought is gone within days.',
+                'You fill emptiness, restlessness or boredom with buying, eating, scrolling.',
+                'One goal is reached and the next is already there — the pause between them is missing.',
+                'You collect experiences as if they were things.'],
+         helps:['Catch the when-then sentence and finish it differently: I can be content now.',
+                'Wait two days before buying. The wanting usually passes on its own.',
+                'Use and look at what you already own. Enough comes from attention, not from going without.',
+                'Answer this once, seriously: what would enough look like?'],
+         close:'Contentment is not an outcome but a decision — you can make it now, and again tomorrow.' } },
+  comfort:{
+    de:{ steals:'Die Bequemlichkeit hält dich in dem, was du kennst: dem Gespräch, das du nicht führst, dem Weg, den du immer gehst, dem Leben, das nicht mehr passt, aber schon eingerichtet ist. Izzo beschreibt Gewohnheiten als Kanäle, auf die wir automatisch schalten. Der Dieb sagt: So bin ich eben. Das stimmt nicht – es ist nur der gewohnte Kanal. Und was wächst, liegt jedes Mal ein Stück außerhalb.',
+         signs:['Du schiebst ein Gespräch vor dir her, von dem du weißt, dass es sein muss.',
+                'Du bleibst, weil Gehen anstrengender wäre als Bleiben.',
+                'Deine Abende sehen alle gleich aus, ohne dass du das entschieden hättest.',
+                '„Gerade ist kein guter Zeitpunkt“ – und das schon länger.',
+                'Angst kommt als Vernunft verkleidet.'],
+         helps:['Tu die unangenehme Sache zuerst, bevor die guten Gründe eintreffen.',
+                'Frag dich: Was würde ich tun, wenn ich keine Angst hätte? Und dann: Was davon in klein?',
+                'Ein Schritt genügt. Gegen große Sprünge wehrt sich die Bequemlichkeit erfolgreich, gegen kleine nicht.',
+                'Sag dir: Das ist eine Gewohnheit, nicht meine Person. Kanäle kann man wechseln.'],
+         close:'Jedes Mal, wenn du das Unbehagen wählst, wird der Bereich größer, in dem du dich frei bewegst.' },
+    en:{ steals:'Comfort keeps you inside what you know: the conversation you don’t have, the route you always take, the life that no longer fits but is already furnished. Izzo describes habits as channels we switch to automatically. The thief says: this is just who I am. It isn’t — it is only the habitual channel. And whatever grows always lies a little outside it.',
+         signs:['You put off a conversation you know has to happen.',
+                'You stay because leaving would take more effort than staying.',
+                'Your evenings all look the same, without you having decided that.',
+                '“Now isn’t a good time” — and hasn’t been for a while.',
+                'Fear arrives dressed as reason.'],
+         helps:['Do the uncomfortable thing first, before the good reasons arrive.',
+                'Ask: what would I do if I weren’t afraid? Then: what is the small version of that?',
+                'One step is enough. Comfort defends itself well against leaps, poorly against small steps.',
+                'Tell yourself: this is a habit, not my person. Channels can be changed.'],
+         close:'Every time you choose the discomfort, the space you move around in freely gets bigger.' } }
+};
+
 const I18N = {
   de:{
     nav_log:'Rückblick', nav_back:'Zurück',
@@ -298,17 +442,24 @@ const I18N = {
     i_book_t:'John Izzo: Die fünf großen Glücksdiebe',
     i_url:'https://amzn.eu/d/0gEEW3as',
     i_start:'Los geht’s',
+    i_tap:'Tippe einen Namen an, um den Dieb kennenzulernen.',
+    t_eyebrow:'Der Dieb',
+    t_mantra:'Das Mantra dagegen',
+    t_steals:'Wie er stiehlt',
+    t_signs:'Woran du ihn erkennst',
+    t_helps:'Was hilft',
+    read_more:'Diesen Dieb kennenlernen ›',
     intro:[
       { title:'Die fünf Diebe des Glücks', book:true },
       { p:'John Izzo beschreibt fünf Denkgewohnheiten, die uns das Glück stehlen. Er nennt sie die fünf großen Glücksdiebe.' },
       { names:true },
-      { p:'Du übst hier eine Gewohnheit ein: die fünf Diebe zu erkennen, während sie am Werk sind.' },
-      { p:'Je öfter du sie erwischst, desto weniger Macht haben sie – mit der Zeit tauchen sie seltener auf und nehmen dir weniger weg.' },
+      { p:'Übe, die fünf Diebe im Alltag zu erkennen.' },
+      { p:'Je öfter du sie erkennst, desto weniger Macht haben sie – mit der Zeit tauchen sie seltener auf und nehmen dir weniger weg.' },
       { p:'Dafür sind die Mantras da: Jedes stellt seinem Dieb etwas entgegen.' },
       { p:'Morgens sprichst du die fünf Mantras, eines nach dem anderen, und wählst eines davon als Fokus für den Tag.' },
       { p:'Tagsüber merkst du, wenn dieser Dieb auftaucht – und sprichst sein Mantra noch einmal.' },
       { p:'Abends notierst du drei Dinge, für die du dankbar bist, und einen Menschen, dem du Gutes wünschst.' },
-      { p:'Nach 30 Tagen sind die Diebe noch nicht weg – aber es fällt dir deutlich einfacher, sie zu erkennen.' },
+      { p:'Nach 30 Tagen sind die Diebe noch nicht weg – aber es fällt dir leichter, sie zu erkennen.' },
       { p:'Die Idee der fünf Diebe stammt von John Izzo. Lies sein Buch – diese App ersetzt es nicht, sie hilft dir, täglich zu üben.', book:true },
       { p:'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.' }
     ],
@@ -360,6 +511,13 @@ const I18N = {
     i_book_t:'John Izzo: The Five Thieves of Happiness',
     i_url:'https://amzn.eu/d/0eAXp9t8',
     i_start:'Start',
+    i_tap:'Tap a name to get to know that thief.',
+    t_eyebrow:'The thief',
+    t_mantra:'The mantra that answers it',
+    t_steals:'How it steals',
+    t_signs:'How you notice it',
+    t_helps:'What helps',
+    read_more:'Get to know this thief ›',
     intro:[
       { title:'The Five Thieves of Happiness', book:true },
       { p:'John Izzo describes five habits of mind that steal our happiness. He calls them the five thieves of happiness.' },
@@ -452,13 +610,15 @@ const store = {
 let S = { version:2, lang:'de', seen:false, days:{} };
 
 const ui = {
-  view:'flow',        // 'flow' | 'review' | 'intro'
+  view:'flow',        // 'flow' | 'review' | 'intro' | 'thief'
   key:null,           // day being worked on
   step:'day',         // 'day' | 'done'
   page:null,          // which page of the day is showing
   catchup:false,      // working on yesterday, not today
   editing:false,      // re-entered a step from the done screen
   intro:0,            // which onboarding screen
+  thief:null,         // which thief the detail page shows
+  from:'flow',        // the view the detail page was opened from
   focusPick:null, showed:null, note:'', grats:['','',''], celeb:''
 };
 
@@ -650,10 +810,14 @@ function IntroView(){
       if (st.p) p.appendChild(el(`<p>${st.p}</p>`));
       if (st.names){                             // the five, in the book's order
         const names = el('<div class="names"></div>');
-        THIEVES.forEach(th=>names.appendChild(el(
-          `<div><span class="g">·</span><span class="n">${th[S.lang].n}</span></div>`)));
+        THIEVES.forEach(th=>{
+          const b = el(`<button class="nrow"><span class="n">${th[S.lang].n}</span><span class="go">›</span></button>`);
+          b.onclick = ()=>openThief(th.id);
+          names.appendChild(b);
+        });
         p.appendChild(names);
         if (t().i_kebab) p.appendChild(el(`<p class="note">${t().i_kebab}</p>`));
+        p.appendChild(el(`<p class="note">${t().i_tap}</p>`));
       }
       if (st.book) p.appendChild(bookP());
       pg.appendChild(p);
@@ -750,7 +914,7 @@ function DayView(){
   THIEVES.forEach(th=>{
     const b = el(`
       <button class="thief" aria-pressed="${focused()===th.id}">
-        <span class="glyph">${S.lang==='de' ? th.de.n[0] : '•'}</span>
+        <span class="glyph">•</span>
         <span>
           <span class="name">${th[S.lang].n}</span>
           <span class="desc">${th[S.lang].d}</span>
@@ -774,11 +938,14 @@ function DayView(){
   const chead = phead(eyebrowFor(t().daytime), t().check_h(artName(focused())),
                       ui.catchup ? t().catchup_l : t().check_l);
   cp.appendChild(chead);
+  /* the mantra of the day is also the way into its thief */
   const card = el(`
-    <div class="focus-card">
+    <button class="focus-card">
       <div class="who">${t().todays} · ${name(focused())}</div>
       <div class="say">${say(focused())}</div>
-    </div>`);
+      <div class="more">${t().read_more}</div>
+    </button>`);
+  card.onclick = ()=>openThief(focused());
   cp.appendChild(card);
 
   const yn = el(`
@@ -878,6 +1045,57 @@ function DayView(){
     [...marks.children].forEach((n,k)=>n.classList.toggle('on', k===startAt));
     setDusk(startAt >= P_JOURNAL);
   });
+  return w;
+}
+
+/* --- one thief, in detail ------------------------------------------ *
+ *  Opened from the five names on the start pages, and from the mantra
+ *  of the day. Leaving returns to wherever it was opened from.
+ * -------------------------------------------------------------------- */
+
+function openThief(id){
+  ui.thief = id;
+  ui.from = ui.view;
+  ui.view = 'thief';
+  render('fwd');
+}
+
+function closeThief(){
+  ui.view = ui.from || 'flow';
+  ui.thief = null;
+  render('back');
+}
+
+function ThiefView(){
+  const th = T5(ui.thief), x = th[S.lang], dt = DETAIL[th.id][S.lang];
+  const w = el('<section class="tview"></section>');
+  w.appendChild(header(t().t_eyebrow, '', x.n, x.d));
+  w.appendChild(el(`
+    <div class="mantra">
+      <div class="who">${t().t_mantra}</div>
+      <div class="say">${x.m}</div>
+    </div>`));
+
+  const sec = (label, inner) => w.appendChild(el(
+    `<div class="tsec"><h2>${label}</h2>${inner}</div>`));
+  const list = (items) => `<ul class="tlist">${items.map(s=>`<li>${s}</li>`).join('')}</ul>`;
+
+  sec(t().t_steals, `<p>${dt.steals}</p>`);
+  sec(t().t_signs,  list(dt.signs));
+  sec(t().t_helps,  list(dt.helps));
+  w.appendChild(el(`<p class="quote" style="margin-top:24px">${dt.close}</p>`));
+  w.appendChild(el(`
+    <div class="prose">
+      <p class="book">${t().i_book}<br>
+      <a href="${t().i_url}" target="_blank" rel="noopener noreferrer">${t().i_book_t}</a></p>
+    </div>`));
+
+  w.appendChild(fill());
+  const acts = el('<div class="actions"></div>');
+  const back = el(`<button class="ghost">${t().nav_back}</button>`);
+  back.onclick = closeThief;
+  acts.appendChild(back);
+  w.appendChild(acts);
   return w;
 }
 
@@ -1010,6 +1228,7 @@ function render(dir){        // dir: 'fwd' | 'back' | undefined
 
   const view = $('view');
   const page = ui.view==='intro'  ? IntroView()
+             : ui.view==='thief'  ? ThiefView()
              : ui.view==='review' ? ReviewView()
              : ui.step==='done'   ? DoneView()
              : DayView();
@@ -1044,6 +1263,7 @@ function render(dir){        // dir: 'fwd' | 'back' | undefined
 $('de').onclick = async ()=>{ S.lang='de'; await save(); render(); };
 $('en').onclick = async ()=>{ S.lang='en'; await save(); render(); };
 $('navBtn').onclick = ()=>{ if (ui.view==='intro') return leaveIntro();
+                            if (ui.view==='thief') return closeThief();
                             const toReview = ui.view==='flow';
                             ui.view = toReview ? 'review' : 'flow';
                             render(toReview ? 'fwd' : 'back'); };
