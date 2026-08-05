@@ -85,6 +85,10 @@
   .bye h1{font-size:clamp(26px,7.4vw,34px);line-height:1.14;letter-spacing:-.024em;
           max-width:14ch;margin:0 auto}
   .bye .lede{max-width:28ch;margin:14px auto 0}
+  /* tomorrow's thief is a door into its page */
+  .golink{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;
+          border-bottom:1px solid var(--line);transition:border-color .18s ease}
+  .golink:hover{border-bottom-color:var(--accent)}
   #view>section.day{height:100%;min-height:0;padding-bottom:0}
   .day .dots{margin:0 0 8px;flex:none}
   .intro-page{min-height:100%;scroll-snap-align:start;scroll-snap-stop:always;
@@ -266,6 +270,15 @@
   .row .v small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
   .tag{font-family:var(--mono);font-size:11px;color:var(--mute)}
   .empty{color:var(--mute);font-size:15px;padding:22px 0}
+
+  /* ---- carrying the days across ---- */
+  .transfer{margin-top:24px;border-top:1px solid var(--line)}
+  .transfer .section-label{margin-top:20px}
+  .transfer .hint{margin-bottom:14px}
+  .transfer textarea{font-family:var(--mono);font-size:12px;line-height:1.5;
+                     min-height:92px;max-height:190px;overflow:auto;resize:vertical;
+                     border:1px solid var(--line);border-radius:4px;padding:10px}
+  .transfer .actions{margin-top:14px}
 
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   @media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
@@ -510,7 +523,7 @@ const I18N = {
     celebrated:'Gutes gewünscht',
     edit_check:'Antwort ändern', edit_journal:'Journal ändern',
     bye_h:'Hab einen schönen Abend.',
-    bye_l:'Bis morgen – fünf Mantras, ein Fokus.',
+    bye_l:(x)=>`Morgen geht’s weiter mit ${x}.`,
     thirty:'Die 30 Tage sind geschafft – ein guter Anfang. Der Wissende in dir ist wach, aber die Diebe kommen wieder: Das Bemerken bleibt Übung. Sieh dir den Rückblick an und mach weiter.',
     r_h:'Was dich bestohlen hat',
     r_l:(n)=>`Bisher ${n===1?'ein Tag':`${n} Tage`}. Die Zahlen: aufgetaucht / im Fokus.`,
@@ -520,6 +533,17 @@ const I18N = {
     open_tag:'offen', late_tag:'nachgetragen', none_mark:'—',
     exp_btn:'Daten exportieren', reset:'Alles löschen',
     reset_ask:'Alle Einträge löschen? Das lässt sich nicht rückgängig machen.',
+    xfer_btn:'Aufs andere Gerät',
+    xfer_h:'Daten übertragen',
+    xfer_l:'Home-Screen-App und Browser haben getrennte Speicher. Hier den Text kopieren, drüben einfügen und übernehmen.',
+    xfer_ph:'Kopierte Daten hier einfügen …',
+    xfer_copy:'Kopieren', xfer_apply:'Übernehmen',
+    xfer_copied:'Kopiert.',
+    xfer_manual:'Bitte den Text von Hand markieren und kopieren.',
+    xfer_bad:'Das ist keine gültige Sicherung.',
+    xfer_none:'Darin steht kein einziger begonnener Tag.',
+    xfer_ask:(n)=>`${n===1?'Einen Tag':`${n} Tage`} übernehmen? Tage mit gleichem Datum werden ersetzt.`,
+    xfer_ok:(n)=>`${n===1?'Ein Tag':`${n} Tage`} übernommen.`,
     priv:'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.'
   },
   en:{
@@ -580,7 +604,7 @@ const I18N = {
     celebrated:'Celebrated',
     edit_check:'Change the answer', edit_journal:'Edit the journal',
     bye_h:'Have a good evening.',
-    bye_l:'See you tomorrow — five mantras, one focus.',
+    bye_l:(x)=>`Tomorrow goes on with ${x}.`,
     thirty:'Thirty days done — a good start. The Knower in you is awake, but the thieves come back: noticing them stays a practice. Look at the review, then keep going.',
     r_h:'What stole from you',
     r_l:(n)=>`${n} ${n===1?'day':'days'} begun. The number: showed up / in focus.`,
@@ -590,6 +614,17 @@ const I18N = {
     open_tag:'open', late_tag:'late entry', none_mark:'—',
     exp_btn:'Export data', reset:'Delete everything',
     reset_ask:'Delete every entry? This cannot be undone.',
+    xfer_btn:'To another device',
+    xfer_h:'Carry the days across',
+    xfer_l:'The home screen app and the browser keep separate storage. Copy the text here, paste it over there and apply it.',
+    xfer_ph:'Paste the copied data here …',
+    xfer_copy:'Copy', xfer_apply:'Apply',
+    xfer_copied:'Copied.',
+    xfer_manual:'Please select the text by hand and copy it.',
+    xfer_bad:'That is not a valid backup.',
+    xfer_none:'There is not a single begun day in it.',
+    xfer_ask:(n)=>`Take over ${n===1?'one day':`${n} days`}? Days with the same date are replaced.`,
+    xfer_ok:(n)=>`${n===1?'One day':`${n} days`} taken over.`,
     priv:'Everything stays on this device. No account, no server.'
   }
 };
@@ -648,6 +683,8 @@ const name = (id) => T5(id)[S.lang].n;
 const say  = (id) => T5(id)[S.lang].m;
 /* German needs the article to read as a sentence: "Ist die Kontrolle …" */
 const artName = (id) => { const x = T5(id)[S.lang]; return x.a ? `${x.a} ${x.n}` : x.n; };
+/* … and after "mit" the same article turns dative: "mit der Kontrolle" */
+const DATIVE = { die:'der', der:'dem', das:'dem' };
 
 const fmtKey = (d) =>
   `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -666,13 +703,14 @@ function resetTemps(){
   ui.grats = ['','','']; ui.celeb = ''; ui.editing = false;
 }
 
+const focusAfter = (id) =>
+  THIEVES[(THIEVES.findIndex(x=>x.id===id) + 1) % THIEVES.length].id;
+
 /* The thief after the most recently chosen one — the rotation default. */
 function nextFocus(){
   const keys = startedKeys();
   if (!keys.length) return THIEVES[0].id;
-  const last = S.days[keys[keys.length-1]].focus;
-  const i = THIEVES.findIndex(x=>x.id===last);
-  return THIEVES[(i+1) % THIEVES.length].id;
+  return focusAfter(S.days[keys[keys.length-1]].focus);
 }
 
 /* ================================================================== *
@@ -1178,14 +1216,18 @@ function DoneView(){
   sp.appendChild(acts);
   sc.appendChild(sp);
 
-  /* ---- the good night ---- */
+  /* ---- the good night, and who is waiting tomorrow ---- */
+  const nxt = focusAfter(d.focus), nx = T5(nxt)[S.lang];
+  const link = `<button class="golink">${nx.n}</button>`;
   const bp = el('<div class="day-page bye"></div>');
   bp.appendChild(fill());
-  bp.appendChild(el(`
+  const night = el(`
     <div>
       <h1>${t().bye_h}</h1>
-      <p class="lede">${t().bye_l}</p>
-    </div>`));
+      <p class="lede">${t().bye_l(nx.a ? `${DATIVE[nx.a] || nx.a} ${link}` : link)}</p>
+    </div>`);
+  night.querySelector('.golink').onclick = ()=>openThief(nxt);
+  bp.appendChild(night);
   bp.appendChild(fill());
   sc.appendChild(bp);
 
@@ -1211,6 +1253,92 @@ function DoneView(){
   return w;
 }
 
+/* --- carrying the days to another device ---------------------------- *
+ *  A home screen app and the browser it was saved from keep separate
+ *  storage, and there is no server to sync through. So the days travel
+ *  as text: copy it here, paste it there.
+ * -------------------------------------------------------------------- */
+
+/* Pasted text is treated as coming from anywhere: only the shape the
+   app itself writes survives, and a day counts as closed only if its
+   journal came with it. */
+function normDay(d){
+  if (!d || typeof d !== 'object' || !T5(d.focus)) return null;
+  const cut = (s) => String(s == null ? '' : s).slice(0, 2000);
+  const out = { focus:d.focus };
+  const c = d.check;
+  if (c && typeof c === 'object' && typeof c.showed === 'boolean')
+    out.check = { showed:c.showed, note:cut(c.note) };
+  const grat = (d.journal && Array.isArray(d.journal.grateful) ? d.journal.grateful : [])
+               .filter(g=>typeof g === 'string' && g.trim()).slice(0,3).map(cut);
+  if (grat.length){
+    out.journal = { grateful:grat, celebrate:cut(d.journal.celebrate) };
+    if (d.done) out.done = true;
+  }
+  if (d.late) out.late = true;
+  return out;
+}
+
+/* An import re-renders the review, so its result has to outlive the panel
+   that triggered it. */
+let xferDone = null;
+
+function transferPanel(){
+  const p = el('<div class="transfer" hidden></div>');
+  p.appendChild(el(`<div class="section-label">${t().xfer_h}</div>`));
+  p.appendChild(el(`<p class="hint">${t().xfer_l}</p>`));
+
+  const ta = el(`<textarea rows="4" spellcheck="false" autocapitalize="off"
+                   autocorrect="off" placeholder="${t().xfer_ph}"></textarea>`);
+  /* only days that were begun travel — the shell of an untouched today is noise */
+  const packed = { version:S.version, lang:S.lang, seen:true, days:{} };
+  startedKeys().forEach(k=>{ packed.days[k] = S.days[k]; });
+  ta.value = JSON.stringify(packed);
+  p.appendChild(ta);
+
+  const msg = el('<p class="hint" hidden></p>');
+  const tell = (s)=>{ msg.textContent = s; msg.hidden = false; };
+  if (xferDone){ p.hidden = false; tell(xferDone); xferDone = null; }
+
+  const acts = el('<div class="actions"></div>');
+  const cp = el(`<button class="ghost">${t().xfer_copy}</button>`);
+  cp.onclick = async ()=>{
+    ta.focus();
+    ta.setSelectionRange(0, ta.value.length);   /* iOS ignores a bare select() */
+    let ok = false;
+    try { await navigator.clipboard.writeText(ta.value); ok = true; }
+    catch(e){ try { ok = document.execCommand('copy'); } catch(e2){} }
+    tell(ok ? t().xfer_copied : t().xfer_manual);
+  };
+  const ap = el(`<button class="ghost">${t().xfer_apply}</button>`);
+  ap.onclick = async ()=>{
+    let incoming = null;
+    try { incoming = JSON.parse(ta.value); } catch(e){}
+    const days = incoming && typeof incoming === 'object' ? incoming.days : null;
+    if (!days || typeof days !== 'object') return tell(t().xfer_bad);
+
+    const clean = {};
+    Object.keys(days).forEach(k=>{
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(k)) return;
+      const d = normDay(days[k]);
+      if (d) clean[k] = d;
+    });
+    const keys = Object.keys(clean);
+    if (!keys.length) return tell(t().xfer_none);
+    if (!confirm(t().xfer_ask(keys.length))) return;
+
+    keys.forEach(k=>{ S.days[k] = clean[k]; });
+    S.seen = true;
+    await save();
+    xferDone = t().xfer_ok(keys.length);
+    route();                       // the imported today may already be closed
+    render();
+  };
+  acts.append(cp, ap);
+  p.append(acts, msg);
+  return p;
+}
+
 /* --- review -------------------------------------------------------- */
 function ReviewView(){
   const w = el('<section></section>');
@@ -1218,8 +1346,19 @@ function ReviewView(){
 
   w.appendChild(header(t().nav_log, '', t().r_h, keys.length ? t().r_l(keys.length) : ''));
 
+  /* the way in and out of another device's storage, empty log or not */
+  const xfer = transferPanel();
+  const xbtn = el(`<button class="ghost">${t().xfer_btn}</button>`);
+  xbtn.onclick = ()=>{
+    xfer.hidden = !xfer.hidden;
+    if (!xfer.hidden) xfer.scrollIntoView({ block:'nearest', behavior:'smooth' });
+  };
+
   if (!keys.length){
     w.appendChild(el(`<p class="empty">${t().r_empty}</p>`));
+    const first = el('<div class="actions"></div>');
+    first.appendChild(xbtn);
+    w.append(first, xfer);
     return w;
   }
 
@@ -1272,8 +1411,8 @@ function ReviewView(){
   ex.onclick = actExport;
   const rs = el(`<button class="ghost danger">${t().reset}</button>`);
   rs.onclick = actReset;
-  acts.append(ex, rs);
-  w.appendChild(acts);
+  acts.append(ex, xbtn, rs);
+  w.append(acts, xfer);
   return w;
 }
 
