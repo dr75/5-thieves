@@ -832,6 +832,7 @@ function IntroView(){
 
   let done = false;
   scroller.addEventListener('scroll', ()=>{
+    if (ui.view !== 'intro') return;   // a page on its way out must not steer the header
     const page = scroller.clientHeight || 1;
     const i = Math.max(0, Math.min(steps.length-1, Math.round(scroller.scrollTop / page)));
     if (i !== ui.intro){
@@ -1053,18 +1054,31 @@ function DayView(){
  *  of the day. Leaving returns to wherever it was opened from.
  * -------------------------------------------------------------------- */
 
+/* The detail page is the one screen deep enough to deserve a history
+   entry, so browser back and the iOS swipe lead back out of it. Every
+   way of leaving goes through history.back(); popstate does the work. */
 function openThief(id){
   ui.thief = id;
   ui.from = ui.view;
   ui.view = 'thief';
+  history.pushState({ thief:id }, '');
   render('fwd');
 }
 
 function closeThief(){
-  ui.view = ui.from || 'flow';
-  ui.thief = null;
-  render('back');
+  if (ui.view === 'thief') history.back();
 }
+
+addEventListener('popstate', (e)=>{
+  const wanted = e.state && e.state.thief;
+  if (wanted && ui.view !== 'thief'){        // forward again
+    ui.thief = wanted; ui.from = ui.view; ui.view = 'thief';
+    render('fwd');
+  } else if (!wanted && ui.view === 'thief'){
+    ui.view = ui.from || 'flow'; ui.thief = null;
+    render('back');
+  }
+});
 
 function ThiefView(){
   const th = T5(ui.thief), x = th[S.lang], dt = DETAIL[th.id][S.lang];
@@ -1272,6 +1286,7 @@ addEventListener('hashchange', ()=>{
 });
 
 $('mark').onclick = ()=>{ if (ui.view==='intro') return leaveIntro();
+                          if (ui.view==='thief') history.back();   // drop the detail entry
                           ui.intro = 0; ui.view = 'intro'; render('back'); };
 
 (async function init(){
