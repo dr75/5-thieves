@@ -80,6 +80,11 @@
   .day-page{min-height:100%;scroll-snap-align:start;scroll-snap-stop:always;
             display:flex;flex-direction:column;padding:2px 0 4px}
   .phead{flex:none}
+  /* the good night: nothing to do here, so it sits in the middle */
+  .day-page.bye{text-align:center}
+  .bye h1{font-size:clamp(26px,7.4vw,34px);line-height:1.14;letter-spacing:-.024em;
+          max-width:14ch;margin:0 auto}
+  .bye .lede{max-width:28ch;margin:14px auto 0}
   #view>section.day{height:100%;min-height:0;padding-bottom:0}
   .day .dots{margin:0 0 8px;flex:none}
   .intro-page{min-height:100%;scroll-snap-align:start;scroll-snap-stop:always;
@@ -504,7 +509,8 @@ const I18N = {
     showed:'Aufgetaucht', not_showed:'Nicht aufgetaucht',
     celebrated:'Gutes gewünscht',
     edit_check:'Antwort ändern', edit_journal:'Journal ändern',
-    tomorrow:'Morgen fängt es von vorn an – fünf Mantras, ein Fokus.',
+    bye_h:'Hab einen schönen Abend.',
+    bye_l:'Bis morgen – fünf Mantras, ein Fokus.',
     thirty:'Die 30 Tage sind geschafft – ein guter Anfang. Der Wissende in dir ist wach, aber die Diebe kommen wieder: Das Bemerken bleibt Übung. Sieh dir den Rückblick an und mach weiter.',
     r_h:'Was dich bestohlen hat',
     r_l:(n)=>`Bisher ${n===1?'ein Tag':`${n} Tage`}. Die Zahlen: aufgetaucht / im Fokus.`,
@@ -573,7 +579,8 @@ const I18N = {
     showed:'Showed up', not_showed:'Did not show up',
     celebrated:'Celebrated',
     edit_check:'Change the answer', edit_journal:'Edit the journal',
-    tomorrow:'Tomorrow it starts over — five mantras, one focus.',
+    bye_h:'Have a good evening.',
+    bye_l:'See you tomorrow — five mantras, one focus.',
     thirty:'Thirty days done — a good start. The Knower in you is awake, but the thieves come back: noticing them stays a practice. Look at the review, then keep going.',
     r_h:'What stole from you',
     r_l:(n)=>`${n} ${n===1?'day':'days'} begun. The number: showed up / in focus.`,
@@ -707,7 +714,7 @@ async function actFinish(){
   if (ui.catchup) d.late = true;
   await save();
   if (ui.catchup) route();            // yesterday closed → today's morning
-  else { ui.editing = false; ui.step = 'done'; }
+  else { ui.editing = false; ui.step = 'done'; ui.page = P_BYE; }
   render('fwd');
 }
 
@@ -1126,12 +1133,22 @@ function ThiefView(){
   return w;
 }
 
-/* --- the day is closed --------------------------------------------- */
+/* --- the day is closed --------------------------------------------- *
+ *  Two pages: what the day held, and the good night. Closing the day
+ *  lands on the good night, and so does every later visit until the
+ *  next day begins; the summary sits one swipe back, with its buttons.
+ * -------------------------------------------------------------------- */
+
+const P_SUMMARY = 0, P_BYE = 1, DONE_PAGES = 2;
+
 function DoneView(){
   const d = S.days[ui.key];
   const full = startedKeys().length >= 30;
-  const w = el('<section></section>');
-  w.appendChild(header(t().evening, dayLabel(), t().done_h));
+  const w  = el('<section class="day"></section>');
+  const sc = el('<div class="day-scroll"></div>');
+
+  const sp = el('<div class="day-page"></div>');
+  sp.appendChild(header(t().evening, dayLabel(), t().done_h));
 
   const box = el('<div class="done"></div>');
   box.appendChild(el(`
@@ -1148,17 +1165,49 @@ function DoneView(){
   if (d.journal.celebrate) box.appendChild(el(
     `<div class="quote">${t().celebrated}: ${esc(d.journal.celebrate)}</div>`));
 
-  box.appendChild(el(`<p style="margin-top:22px">${full ? t().thirty : t().tomorrow}</p>`));
-  w.appendChild(box);
+  if (full) box.appendChild(el(`<p style="margin-top:22px">${t().thirty}</p>`));
+  sp.appendChild(box);
 
-  w.appendChild(fill());
+  sp.appendChild(fill());
   const acts = el('<div class="actions"></div>');
   const e1 = el(`<button class="ghost">${t().edit_check}</button>`);
   e1.onclick = ()=>actEdit('check');
   const e2 = el(`<button class="ghost">${t().edit_journal}</button>`);
   e2.onclick = ()=>actEdit('journal');
   acts.append(e1, e2);
-  w.appendChild(acts);
+  sp.appendChild(acts);
+  sc.appendChild(sp);
+
+  /* ---- the good night ---- */
+  const bp = el('<div class="day-page bye"></div>');
+  bp.appendChild(fill());
+  bp.appendChild(el(`
+    <div>
+      <h1>${t().bye_h}</h1>
+      <p class="lede">${t().bye_l}</p>
+    </div>`));
+  bp.appendChild(fill());
+  sc.appendChild(bp);
+
+  /* ---- assembly ---- */
+  const marks = dots(P_BYE, DONE_PAGES);
+  w.appendChild(sc);
+  w.appendChild(marks);
+
+  sc.addEventListener('scroll', ()=>{
+    const page = sc.clientHeight || 1;
+    const i = Math.max(0, Math.min(DONE_PAGES-1, Math.round(sc.scrollTop / page)));
+    if (i === ui.page) return;
+    ui.page = i;
+    [...marks.children].forEach((n,k)=>n.classList.toggle('on', k===i));
+  }, {passive:true});
+
+  requestAnimationFrame(()=>{
+    const startAt = ui.page != null ? ui.page : P_BYE;
+    ui.page = startAt;
+    sc.scrollTop = startAt * sc.clientHeight;
+    [...marks.children].forEach((n,k)=>n.classList.toggle('on', k===startAt));
+  });
   return w;
 }
 
