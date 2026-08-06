@@ -642,7 +642,7 @@ const KEY = 'kebab:state';
 /* There is no build step, so the date of the last change is written here
    by hand and shown at the foot of the review — the one way to tell a
    freshly loaded app from one the browser or the home screen kept. */
-const BUILT = '2026-08-06 22:40';
+const BUILT = '2026-08-06 22:52';
 
 const store = {
   async get(){
@@ -733,19 +733,33 @@ function nextFocus(){
 
 function stepOf(d){ return (d && d.done) ? 'done' : 'day'; }
 
+/* Whatever the day already holds comes back into its fields, so a day
+   reopened mid-flow is never blank where something was written. */
+function seedTemps(key){
+  const d = S.days[key];
+  if (!d) return;
+  if (d.check){ ui.showed = d.check.showed; ui.note = d.check.note || ''; }
+  if (d.journal){
+    const g = d.journal.grateful || [];
+    ui.grats = [g[0]||'', g[1]||'', g[2]||''];
+    ui.celeb = d.journal.celebrate || '';
+  }
+}
+
 function route(){
   resetTemps();
   const today = S.days[todayKey()];
   if (today && today.focus){
     Object.assign(ui, { key:todayKey(), step:stepOf(today), catchup:false });
-    return;
+    return seedTemps(ui.key);
   }
   const y = S.days[yesterdayKey()];
   if (y && y.focus && !y.done){
     Object.assign(ui, { key:yesterdayKey(), step:stepOf(y), catchup:true });
-    return;
+    return seedTemps(ui.key);
   }
   Object.assign(ui, { key:todayKey(), step:'day', catchup:false });
+  seedTemps(ui.key);
 }
 
 /* ================================================================== *
@@ -756,6 +770,7 @@ async function actFinish(){
   const grats = ui.grats.map(g=>g.trim()).filter(Boolean);
   if (!grats.length) return;
   const d = S.days[ui.key];
+  if (!d.focus) d.focus = ui.focusPick;    // a day is never closed without its thief
   d.journal = { grateful:grats, celebrate:ui.celeb.trim() };
   d.done = true;
   if (ui.catchup) d.late = true;
@@ -1029,6 +1044,9 @@ function DayView(){
     ui.showed = ui.showed===v ? null : v;
     if (ui.showed === null) delete d.check;
     else {
+      /* the answer is about the thief the page names, so the day keeps
+         that one even when the list was never touched */
+      d.focus = focused();
       d.check = { showed:ui.showed, note:ui.note.trim() };
       if (ui.catchup) d.late = true;
     }
