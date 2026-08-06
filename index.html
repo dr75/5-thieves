@@ -518,6 +518,7 @@ const I18N = {
     g_label:'Dankbar für', g_ph:'…',
     c_label:'Jemandem Gutes wünschen', c_ph:'Wem – und was?',
     finish:'Tag abschließen',
+    need_check:'Die Frage des Tages ist noch offen.',
     done_h:'Der Tag ist abgeschlossen.',
     showed:'Aufgetaucht', not_showed:'Nicht aufgetaucht',
     celebrated:'Gutes gewünscht',
@@ -599,6 +600,7 @@ const I18N = {
     g_label:'Grateful for', g_ph:'…',
     c_label:'Celebrate someone', c_ph:'Who — and what for?',
     finish:'Close the day',
+    need_check:'The question of the day is still open.',
     done_h:'The day is closed.',
     showed:'Showed up', not_showed:'Did not show up',
     celebrated:'Celebrated',
@@ -759,7 +761,10 @@ async function actFinish(){
 function actEdit(which){
   const d = S.days[ui.key];
   ui.editing = true;
-  if (which === 'check'){ ui.showed = d.check.showed; ui.note = d.check.note || ''; }
+  if (which === 'check'){
+    ui.showed = d.check ? d.check.showed : null;
+    ui.note   = (d.check && d.check.note) || '';
+  }
   const g = (d.journal && d.journal.grateful) || [];
   ui.grats = [g[0]||'', g[1]||'', g[2]||''];
   ui.celeb = (d.journal && d.journal.celebrate) || '';
@@ -1022,6 +1027,7 @@ function DayView(){
     }
     yesB.setAttribute('aria-pressed', ui.showed===true);
     noB.setAttribute('aria-pressed', ui.showed===false);
+    refreshFinish();          // taking the answer back closes the day again
     await save();
   };
   yesB.onclick = ()=>answer(true);
@@ -1063,7 +1069,7 @@ function DayView(){
     inp.value = ui.grats[i];
     inp.oninput = (e)=>{
       ui.grats[i] = e.target.value;
-      $('finish').disabled = !ui.grats.some(g=>g.trim());
+      refreshFinish();
     };
     gl.appendChild(row);
   }
@@ -1078,10 +1084,23 @@ function DayView(){
   cta.oninput = (e)=>{ ui.celeb = e.target.value; };
   jp.appendChild(cf);
   jp.appendChild(fill());
-  const btn = el(`<button class="save" id="finish" ${ui.grats.some(g=>g.trim())?'':'disabled'}>${t().finish}</button>`);
+  /* A day closes on an answer and at least one gratitude. While the
+     answer is missing, the hint says so and leads back to the question
+     instead of leaving a dead button. */
+  const miss = el(`<p class="hint" hidden><button class="golink">${t().need_check}</button></p>`);
+  miss.querySelector('.golink').onclick =
+    ()=>cp.scrollIntoView({ behavior:'smooth', block:'start' });
+  jp.appendChild(miss);
+  const btn = el(`<button class="save" id="finish">${t().finish}</button>`);
   btn.onclick = actFinish;
   jp.appendChild(btn);
   sc.appendChild(jp);
+
+  function refreshFinish(){
+    btn.disabled = !(d.check && ui.grats.some(g=>g.trim()));
+    miss.hidden = !!d.check;
+  }
+  refreshFinish();
 
   /* ---- assembly ---- */
   const marks = dots(0, DAY_PAGES);
@@ -1191,10 +1210,11 @@ function DoneView(){
   const box = el('<div class="done"></div>');
   box.appendChild(el(`
     <div class="focus-card" style="margin-top:0">
-      <div class="who">${name(d.focus)} · ${d.check.showed ? t().showed : t().not_showed}</div>
+      <div class="who">${name(d.focus)} · ${
+        d.check ? (d.check.showed ? t().showed : t().not_showed) : t().none_mark}</div>
       <div class="say">${say(d.focus)}</div>
     </div>`));
-  if (d.check.note) box.appendChild(el(`<div class="quote">${esc(d.check.note)}</div>`));
+  if (d.check && d.check.note) box.appendChild(el(`<div class="quote">${esc(d.check.note)}</div>`));
 
   const gl = el(`<ul class="gratlist" style="margin-top:20px"></ul>`);
   d.journal.grateful.forEach((g,i)=>gl.appendChild(el(
