@@ -545,7 +545,8 @@ const I18N = {
     xfer_none:'Darin steht kein einziger begonnener Tag.',
     xfer_ask:(n)=>`${n===1?'Einen Tag':`${n} Tage`} übernehmen? Tage mit gleichem Datum werden ersetzt.`,
     xfer_ok:(n)=>`${n===1?'Ein Tag':`${n} Tage`} übernommen.`,
-    priv:'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.'
+    priv:'Alles bleibt auf diesem Gerät. Kein Konto, kein Server.',
+    built:'Stand'
   },
   en:{
     nav_log:'Review', nav_back:'Back',
@@ -627,7 +628,8 @@ const I18N = {
     xfer_none:'There is not a single begun day in it.',
     xfer_ask:(n)=>`Take over ${n===1?'one day':`${n} days`}? Days with the same date are replaced.`,
     xfer_ok:(n)=>`${n===1?'One day':`${n} days`} taken over.`,
-    priv:'Everything stays on this device. No account, no server.'
+    priv:'Everything stays on this device. No account, no server.',
+    built:'Version'
   }
 };
 
@@ -636,6 +638,11 @@ const I18N = {
  * ================================================================== */
 
 const KEY = 'kebab:state';
+
+/* There is no build step, so the date of the last change is written here
+   by hand and shown at the foot of the review — the one way to tell a
+   freshly loaded app from one the browser or the home screen kept. */
+const BUILT = '2026-08-06 22:40';
 
 const store = {
   async get(){
@@ -1374,11 +1381,14 @@ function ReviewView(){
     if (!xfer.hidden) xfer.scrollIntoView({ block:'nearest', behavior:'smooth' });
   };
 
+  /* which version of the one file is running, empty log or not */
+  const stamp = ()=> el(`<p class="tag" style="margin-top:22px">${t().built} ${BUILT}</p>`);
+
   if (!keys.length){
     w.appendChild(el(`<p class="empty">${t().r_empty}</p>`));
     const first = el('<div class="actions"></div>');
     first.appendChild(xbtn);
-    w.append(first, xfer);
+    w.append(first, xfer, stamp());
     return w;
   }
 
@@ -1432,7 +1442,7 @@ function ReviewView(){
   const rs = el(`<button class="ghost danger">${t().reset}</button>`);
   rs.onclick = actReset;
   acts.append(ex, xbtn, rs);
-  w.append(acts, xfer);
+  w.append(acts, xfer, stamp());
   return w;
 }
 

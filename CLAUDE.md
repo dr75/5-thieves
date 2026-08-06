@@ -4,6 +4,9 @@
 
 - Always commit directly to `main` and push (`git push -u origin main`).
 - Do not create feature branches or pull requests unless explicitly asked.
+- Before committing a change to `index.html`, set the `BUILT` constant to the
+  current local time (`date '+%Y-%m-%d %H:%M'`). It is shown at the foot of the
+  review page and is the only way to tell a deployed version from a cached one.
 
 ## Project
 
